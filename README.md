@@ -1,4 +1,4 @@
-# Courier Management System
+# Logistics Management System
 
 ## Features
 - User Registration
