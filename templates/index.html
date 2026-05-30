@@ -1,0 +1,2750 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Logistics Management System</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f4f8fc;
+    overflow-x:hidden;
+    color:#0f172a;
+}
+
+img{
+    max-width:100%;
+}
+
+button{
+    border:none;
+    outline:none;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:calc(100% - 40px);
+
+    margin:20px;
+
+    padding:16px 35px;
+
+    background:
+    rgba(15,23,42,0.92);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:50px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    z-index:1000;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.15);
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    text-decoration:none;
+
+}
+
+.logo img{
+
+    width:55px;
+    height:55px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,0.15);
+
+}
+
+.logo span{
+
+    color:white;
+
+    font-size:21px;
+
+    font-weight:700;
+
+}
+
+.nav-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:24px;
+
+}
+
+.nav-links a{
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+    position:relative;
+
+    transition:0.3s;
+
+}
+
+.nav-links a::after{
+
+    content:'';
+
+    position:absolute;
+
+    left:0;
+    bottom:-6px;
+
+    width:0%;
+
+    height:2px;
+
+    background:#38bdf8;
+
+    transition:0.3s;
+
+}
+
+.nav-links a:hover{
+
+    color:#38bdf8;
+
+}
+
+.nav-links a:hover::after{
+
+    width:100%;
+
+}
+
+/* ================= BUTTONS ================= */
+
+.login-btn,
+.signup-btn,
+.user-btn{
+
+    padding:12px 22px;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:0.3s;
+
+    font-size:14px;
+
+}
+
+.login-btn{
+
+    border:1px solid #38bdf8;
+
+    background:transparent;
+
+    color:white;
+
+}
+
+.signup-btn,
+.user-btn{
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #0ea5e9);
+
+    color:white;
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,0.25);
+
+}
+
+.login-btn:hover,
+.signup-btn:hover,
+.user-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ================= DROPDOWN ================= */
+
+.user-menu{
+    position:relative;
+}
+
+.dropdown{
+
+    position:absolute;
+
+    top:60px;
+    right:0;
+
+    width:230px;
+
+    background:white;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    display:none;
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.12);
+
+}
+
+.dropdown a{
+
+    display:block;
+
+    padding:16px 18px;
+
+    text-decoration:none;
+
+    color:#0f172a;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+}
+
+.dropdown a:hover{
+
+    background:#f1f5f9;
+
+    color:#2563eb;
+
+}
+
+/* ================= HERO ================= */
+
+.hero{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+    rgba(15,23,42,0.82),
+    rgba(15,23,42,0.82)),
+
+    url('/static/bg.jpg');
+
+    background-size:cover;
+
+    background-position:center;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:140px 20px 70px;
+
+}
+
+.hero-box{
+
+    max-width:950px;
+
+    color:white;
+
+}
+
+.hero-box h1{
+
+    font-size:
+    clamp(40px,7vw,72px);
+
+    line-height:1.2;
+
+    margin-bottom:24px;
+
+    text-shadow:
+    0 10px 25px rgba(0,0,0,0.35);
+
+}
+
+.hero-box p{
+
+    font-size:
+    clamp(16px,2vw,21px);
+
+    opacity:0.92;
+
+    line-height:1.9;
+
+    margin-bottom:38px;
+
+}
+
+.hero-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+}
+
+.hero-btn{
+
+    padding:18px 34px;
+
+    border-radius:40px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.primary-btn{
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #0ea5e9);
+
+    color:white;
+
+    box-shadow:
+    0 12px 28px rgba(37,99,235,0.25);
+
+}
+
+.secondary-btn{
+
+    background:white;
+
+    color:#0f172a;
+
+}
+
+.hero-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ================= SECTION ================= */
+
+.section{
+
+    padding:
+    clamp(60px,8vw,90px)
+    clamp(20px,7vw,8%);
+
+}
+
+.section-title{
+
+    text-align:center;
+
+    margin-bottom:55px;
+
+}
+
+.section-title h2{
+
+    font-size:44px;
+
+    color:#0f172a;
+
+    margin-bottom:15px;
+
+}
+
+.section-title p{
+
+    color:#64748b;
+
+    font-size:17px;
+
+}
+
+/* ================= SERVICES ================= */
+
+.services-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:28px;
+
+}
+
+.service-card{
+
+    background:white;
+
+    padding:38px 28px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0 12px 30px rgba(0,0,0,0.06);
+
+    transition:0.3s;
+
+    border:1px solid #eef2ff;
+
+}
+
+.service-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:
+    0 18px 40px rgba(0,0,0,0.12);
+
+}
+
+.service-icon{
+
+    font-size:50px;
+
+    margin-bottom:20px;
+
+}
+
+.service-card h3{
+
+    font-size:24px;
+
+    margin-bottom:14px;
+
+    color:#0f172a;
+
+}
+
+.service-card p{
+
+    color:#64748b;
+
+    line-height:1.8;
+
+}
+
+/* ================= ABOUT ================= */
+
+.about{
+
+    background:white;
+
+}
+
+.about-content{
+
+    max-width:1000px;
+
+    margin:auto;
+
+    text-align:center;
+
+    line-height:2;
+
+    color:#475569;
+
+    font-size:18px;
+
+}
+
+/* ================= NOTICE ================= */
+
+.notice{
+
+    margin-top:55px;
+
+    padding:38px;
+
+    border-radius:32px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #0ea5e9);
+
+    color:white;
+
+    text-align:center;
+
+    box-shadow:
+    0 15px 35px rgba(37,99,235,0.25);
+
+}
+
+.notice h2{
+
+    font-size:34px;
+
+    margin-bottom:14px;
+
+}
+
+.notice p{
+
+    line-height:1.9;
+
+}
+
+/* ================= CONTACT ================= */
+
+.contact-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:28px;
+
+}
+
+.contact-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:28px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.07);
+
+    transition:0.3s;
+
+}
+
+.contact-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.contact-card h3{
+
+    margin-bottom:16px;
+
+    color:#0f172a;
+
+    font-size:24px;
+
+}
+
+.contact-card p{
+
+    color:#64748b;
+
+    line-height:1.9;
+
+}
+
+/* ================= PREMIUM LOGIN / SIGNUP ================= */
+
+.modal{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:
+    rgba(15,23,42,0.72);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    padding:20px;
+
+    backdrop-filter:blur(8px);
+
+    animation:fadeIn 0.3s ease;
+
+}
+
+.modal-box{
+
+    width:100%;
+
+    max-width:400px;
+
+    background:
+    linear-gradient(
+    145deg,
+    #ffffff,
+    #f8fbff);
+
+    border-radius:32px;
+
+    padding:38px 32px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,0.7);
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,0.18);
+
+    animation:popup 0.35s ease;
+
+}
+
+.modal-box::before{
+
+    content:'';
+
+    position:absolute;
+
+    top:-90px;
+    right:-90px;
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+    rgba(37,99,235,0.12),
+    transparent 70%);
+
+}
+
+.close{
+
+    position:absolute;
+
+    top:18px;
+    right:20px;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    color:#64748b;
+
+    transition:0.3s;
+
+    z-index:10;
+
+}
+
+.close:hover{
+
+    transform:rotate(90deg);
+
+    color:#111827;
+
+}
+
+.auth-top{
+
+    text-align:center;
+
+    margin-bottom:28px;
+
+}
+
+.auth-top img{
+
+    width:74px;
+    height:74px;
+
+    border-radius:22px;
+
+    object-fit:cover;
+
+    margin-bottom:16px;
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,0.18);
+
+}
+
+.auth-top h2{
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:8px;
+
+}
+
+.auth-top p{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    line-height:1.7;
+
+}
+
+.input-group{
+
+    position:relative;
+
+    margin-bottom:18px;
+
+}
+
+.input-group span{
+
+    position:absolute;
+
+    left:16px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:15px;
+
+    color:#2563eb;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:16px 16px 16px 50px;
+
+    border:1px solid #dbeafe;
+
+    border-radius:16px;
+
+    font-size:14px;
+
+    background:white;
+
+    transition:0.3s;
+
+    color:#0f172a;
+
+}
+
+.input-group input:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,0.12);
+
+}
+
+.input-group input::placeholder{
+
+    color:#94a3b8;
+
+}
+
+.modal-box button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #0ea5e9);
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 12px 25px rgba(37,99,235,0.22);
+
+}
+
+.modal-box button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 16px 35px rgba(37,99,235,0.3);
+
+}
+
+.auth-switch{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+.auth-switch span{
+
+    color:#2563eb;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+
+    background:#0f172a;
+
+    color:white;
+
+    padding:35px;
+
+    text-align:center;
+
+    margin-top:30px;
+
+}
+
+footer p{
+
+    opacity:0.85;
+
+    line-height:1.8;
+
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes popup{
+
+    from{
+
+        transform:scale(0.88);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+
+.vendor-popup{
+    height: auto;
+    width:100%;
+
+    max-width:1000px;
+
+    background:white;
+
+    border-radius:38px;
+
+    overflow:hidden;
+
+    display:grid;
+
+    grid-template-columns:0.9fr 1.1fr;
+
+    box-shadow:
+    0 30px 60px rgba(0,0,0,0.15);
+
+    animation:popup 0.3s ease;
+
+}
+
+/* LEFT */
+
+.vendor-left{
+
+    background:
+    linear-gradient(
+    145deg,
+    #1e3a8a,
+    #2563eb
+    );
+
+    padding:38px;
+
+    color:white;
+
+}
+
+.vendor-badge{
+
+    display:inline-block;
+
+    background:rgba(255,255,255,0.15);
+
+    padding:10px 16px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    margin-bottom:25px;
+
+}
+
+.vendor-left h1{
+
+    font-size:34px;
+
+    line-height:1.2;
+
+    margin-bottom:20px;
+
+}
+
+.vendor-left p{
+
+    line-height:1.8;
+
+    color:#dbeafe;
+
+    margin-bottom:35px;
+
+}
+
+.services{
+
+    display:grid;
+
+    gap:15px;
+
+}
+
+.service-card{
+
+    background:rgba(255,255,255,0.1);
+
+    padding:14px 16px;
+
+    border-radius:20px;
+
+    backdrop-filter:blur(5px);
+
+    font-weight:600;
+
+}
+
+/* RIGHT */
+
+.vendor-right{
+
+    padding:38px;
+
+    background:#ffffff;
+
+}
+
+.vendor-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.vendor-top h2{
+
+    font-size:26px;
+
+    color:#111827;
+
+}
+
+.vendor-close{
+
+    border:none;
+
+    background:none;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    color:#94a3b8;
+
+}
+
+.vendor-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.vendor-form input{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:18px;
+
+    border:1px solid #dbeafe;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:0.2s;
+
+}
+
+.vendor-form textarea{
+
+    width:100%;
+
+    min-height:80px;
+
+    padding:16px;
+
+    border-radius:20px;
+
+    border:1px solid #dbeafe;
+
+    outline:none;
+
+    resize:none;
+
+    font-size:15px;
+
+}
+
+.vendor-form input:focus,
+.vendor-form textarea:focus{
+
+    border:1px solid #2563eb;
+
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,0.1);
+
+}
+
+.vendor-form button{
+
+    background:
+    linear-gradient(
+    45deg,
+    #2563eb,
+    #1d4ed8
+    );
+
+    color:white;
+
+    border:none;
+
+    padding:18px;
+
+    border-radius:20px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    margin-top:10px;
+
+}
+
+.vendor-form button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .vendor-popup{
+
+        grid-template-columns:1fr;
+
+        max-width:95%;
+
+    }
+
+}
+
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .navbar{
+
+        flex-direction:column;
+
+        gap:18px;
+
+        padding:20px;
+
+        border-radius:32px;
+
+    }
+
+    .nav-links{
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+    }
+
+    .hero-box h1{
+
+        font-size:42px;
+
+    }
+
+    .hero-box p{
+
+        font-size:17px;
+
+    }
+
+    .section-title h2{
+
+        font-size:34px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .navbar{
+
+        width:calc(100% - 20px);
+
+        margin:10px;
+
+    }
+
+    .modal-box{
+
+        max-width:100%;
+
+        padding:30px 24px;
+
+        border-radius:28px;
+
+    }
+
+    .auth-top img{
+
+        width:68px;
+        height:68px;
+
+    }
+
+    .auth-top h2{
+
+        font-size:24px;
+
+    }
+
+    .hero{
+
+        padding-top:180px;
+
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <a href="/" class="logo">
+
+        <img src="/static/logo.png">
+
+        <span>Logistics</span>
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+
+        {% if user %}
+
+<div class="user-menu">
+
+    <button
+        class="user-btn"
+        onclick="toggleDropdown()">
+
+        👤 {{ user }} ▼
+
+    </button>
+
+    <div class="dropdown" id="dropdownMenu">
+
+        <a href="/create">
+
+            📦 Create Parcel
+
+        </a>
+
+        <a href="/track">
+
+            🚚 Track Shipment
+
+        </a>
+
+        <a href="/my-orders">
+
+    📋 My Orders
+
+        </a>
+
+        <a href="#"
+onclick="openVendorPopup()">
+
+    🏪 Become Vendor
+
+</a>
+
+<a href="#"
+onclick="openHubPopup()">
+
+    🏢 Become Hub Staff
+
+</a>
+
+<a href="#"
+onclick="openDeliveryPopup()">
+
+    🛵 Become Delivery Boy
+
+</a>
+
+        <a href="/logout">
+
+            🚪 Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<button class="login-btn" onclick="openLogin()">
+
+    Login
+
+</button>
+
+
+<button class="signup-btn" onclick="openSignup()">
+
+    Sign Up
+
+</button>
+
+
+{% endif %}
+
+    </div>
+
+</div>
+
+
+
+
+<!-- VENDOR POPUP -->
+
+<div
+class="modal"
+id="vendorPopup">
+
+    <div class="vendor-popup">
+
+        <!-- LEFT -->
+
+        <div class="vendor-left">
+
+            <div class="vendor-badge">
+
+                Logistics Partner Program
+
+            </div>
+
+            <h1>
+
+                Grow Your Business With Us
+
+            </h1>
+
+            <p>
+
+                Join our logistics network and
+                manage bulk shipments with
+                faster delivery support.
+
+            </p>
+
+            <!-- SERVICES -->
+
+            <div class="services">
+
+                <div class="service-card">
+
+                    🚚 Fast Nationwide Delivery
+
+                </div>
+
+                <div class="service-card">
+
+                    📦 Bulk Shipment Management
+
+                </div>
+
+                <div class="service-card">
+
+                    🏢 Hub & Warehouse Support
+
+                </div>
+
+                <div class="service-card">
+
+                    📍 Real-Time Tracking
+
+                </div>
+
+                <div class="service-card">
+
+                    💰 Business Logistics Support
+
+                </div>
+
+                <div class="service-card">
+
+                    ☎ Dedicated Vendor Assistance
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="vendor-right">
+
+            <div class="vendor-top">
+
+                <h2>
+
+                    Vendor Registration
+
+                </h2>
+
+                <button
+                onclick="closeVendorPopup()"
+                class="vendor-close">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <form
+            method="POST"
+            action="/vendor-request"
+            class="vendor-form">
+
+                <input
+                type="text"
+                name="business_name"
+                placeholder="Business Name"
+                required>
+
+                <input
+                type="text"
+                name="owner_name"
+                placeholder="Owner Name"
+                required>
+
+                <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                required>
+
+                <input
+                type="email"
+                name="email"
+                placeholder="Business Email"
+                required>
+
+                <textarea
+                name="address"
+                placeholder="Business Address"
+                required>
+
+                </textarea>
+
+                <button
+                type="submit">
+
+                    Submit Vendor Request
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- HUB STAFF POPUP -->
+
+<div
+class="modal"
+id="hubPopup">
+
+    <div class="vendor-popup">
+
+        <div class="vendor-left">
+
+            <div class="vendor-badge">
+
+                Hub Staff Program
+
+            </div>
+
+            <h1>
+
+                Become Logistics Hub Staff
+
+            </h1>
+
+            <p>
+
+                Manage parcels, assign deliveries
+                and handle logistics operations.
+
+            </p>
+
+        </div>
+
+        <div class="vendor-right">
+
+            <div class="vendor-top">
+
+                <h2>
+
+                    Hub Staff Request
+
+                </h2>
+
+                <button
+                onclick="closeHubPopup()"
+                class="vendor-close">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <form
+            method="POST"
+            action="/hub-staff-request"
+            class="vendor-form">
+
+                <input
+                type="text"
+                name="full_name"
+                value="{{ user }}"
+                placeholder="Full Name"
+                required>
+
+                <input
+                type="email"
+                name="email"
+                value="{{ session.user_email }}"
+                placeholder="Email"
+                required>
+                
+
+                <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                required>
+
+                <input
+                type="text"
+                name="preferred_hub"
+                placeholder="Preferred Hub"
+                required>
+
+                <textarea
+                name="address"
+                placeholder="Address"
+                required>
+
+                </textarea>
+
+                <textarea
+                name="experience"
+                placeholder="Experience"
+                required>
+
+                </textarea>
+
+                <button
+                type="submit">
+
+                    Submit Request
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- DELIVERY BOY POPUP -->
+
+<div
+class="modal"
+id="deliveryPopup">
+
+    <div class="vendor-popup">
+
+        <div class="vendor-left">
+
+            <div class="vendor-badge">
+
+                Delivery Partner Program
+
+            </div>
+
+            <h1>
+
+                Become Delivery Partner
+
+            </h1>
+
+            <p>
+
+                Deliver parcels and manage
+                doorstep logistics services.
+
+            </p>
+
+        </div>
+
+        <div class="vendor-right">
+
+            <div class="vendor-top">
+
+                <h2>
+
+                    Delivery Boy Request
+
+                </h2>
+
+                <button
+                onclick="closeDeliveryPopup()"
+                class="vendor-close">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <form
+            method="POST"
+            action="/delivery-request"
+            class="vendor-form">
+
+
+                <input
+                type="text"
+                name="full_name"
+                value="{{ user }}"
+                placeholder="Full Name"
+                required>
+
+                <input
+                type="email"
+                name="email"
+                value="{{ session.user_email }}"
+                placeholder="Email"
+                required>
+
+                <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                required>
+
+
+        
+
+                <input
+                type="text"
+                name="vehicle_type"
+                placeholder="Vehicle Type"
+                required>
+
+                <input
+                type="text"
+                name="license_number"
+                placeholder="Driving License"
+                required>
+
+                <input
+                type="text"
+                name="preferred_hub"
+                placeholder="Preferred Hub"
+                required>
+
+                <button
+                type="submit">
+
+                    Submit Request
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-box">
+
+        <h1>
+
+            Fast & Secure Logistics Across India
+
+        </h1>
+
+        <p>
+
+            Book consignments, track shipments live and manage deliveries with reliable logistics support and Cash On Delivery services.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <button
+                class="hero-btn primary-btn"
+                onclick="goToCreate()">
+
+                📦 Create Parcel
+
+            </button>
+
+            <a href="/track">
+
+                <button class="hero-btn secondary-btn">
+
+                    🚚 Track Shipment
+
+                </button>
+                
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SERVICES -->
+
+<section class="section" id="services">
+
+    <div class="section-title">
+
+        <h2>Our Services</h2>
+
+        <p>
+
+            Reliable logistics solutions for businesses and customers
+
+        </p>
+
+    </div>
+
+    <div class="services-grid">
+
+        <div class="service-card">
+
+            <div class="service-icon">🚚</div>
+
+            <h3>Surface Transport</h3>
+
+            <p>
+
+                Safe and reliable road transportation across cities and states.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">✈</div>
+
+            <h3>Express Air Delivery</h3>
+
+            <p>
+
+                Fast air cargo delivery for urgent shipments and parcels.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">🚢</div>
+
+            <h3>Waterway Shipping</h3>
+
+            <p>
+
+                Affordable shipping for bulk goods and heavy cargo.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">💵</div>
+
+            <h3>COD Available</h3>
+
+            <p>
+
+                Customers can pay during parcel delivery using Cash On Delivery.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- COD NOTICE -->
+
+    <div class="notice">
+
+        <h2>
+
+            Cash On Delivery (COD) Supported
+
+        </h2>
+
+        <p>
+
+            Currently our platform supports COD payments only.
+            Online payment gateway will be available soon.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="section about" id="about">
+
+    <div class="section-title">
+
+        <h2>About Us</h2>
+
+        <p>
+
+            Trusted logistics partner for secure deliveries
+
+        </p>
+
+    </div>
+
+    <div class="about-content">
+
+        We provide fast, secure and reliable logistics services across India.
+
+        Our platform helps customers book consignments, track shipments live and receive real-time delivery updates.
+
+        We specialize in road transport, air cargo, heavy parcel logistics and secure COD deliveries with professional handling.
+
+        Our mission is to make logistics simple, transparent and affordable for everyone.
+
+    </div>
+
+</section>
+
+<!-- WHY US -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>Why Choose Us</h2>
+
+        <p>
+
+            Trusted by customers across India
+
+        </p>
+
+    </div>
+
+    <div class="services-grid">
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                ⚡
+            </div>
+
+            <h3>Fast Delivery</h3>
+
+            <p>
+
+                Quick and reliable shipment delivery.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                📍
+            </div>
+
+            <h3>Live Tracking</h3>
+
+            <p>
+
+                Track your parcel in real time.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🔒
+            </div>
+
+            <h3>Safe Handling</h3>
+
+            <p>
+
+                Secure handling for all shipments.
+
+            </p>
+
+        </div>
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                💵
+            </div>
+
+            <h3>COD Support</h3>
+
+            <p>
+
+                Pay easily during parcel delivery.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section class="section" id="contact">
+
+    <div class="section-title">
+
+        <h2>Contact Us</h2>
+
+        <p>
+
+            Reach our support team anytime
+
+        </p>
+
+    </div>
+
+    <div class="contact-grid">
+
+        <div class="contact-card">
+
+            <h3>📞 Phone</h3>
+
+            <p>
+
+                +91 9876543210
+
+            </p>
+
+        </div>
+
+        <div class="contact-card">
+
+            <h3>📧 Email</h3>
+
+            <p>
+
+                support@logistics.com
+
+            </p>
+
+        </div>
+
+        <div class="contact-card">
+
+            <h3>📍 Address</h3>
+
+            <p>
+
+                Nellore, Andhra Pradesh, India
+
+            </p>
+
+        </div>
+
+        <div class="contact-card">
+
+            <h3>🕒 Working Hours</h3>
+
+            <p>
+
+                Monday - Saturday<br>
+                9:00 AM - 8:00 PM
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- LOGIN MODAL -->
+
+<div class="modal" id="loginModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeLogin()">
+
+            ×
+
+        </span>
+
+        <div class="auth-top">
+
+    <img src="/static/logo.png">
+
+    <h2>Welcome Back</h2>
+
+    <p>
+
+        Login to continue your shipment booking
+
+    </p>
+
+</div>
+<!-- REPLACE LOGIN FORM WITH THIS -->
+
+<form id="loginForm">
+
+    <div class="input-group">
+
+        <span>📧</span>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required>
+
+    </div>
+
+    <div class="input-group">
+
+        <span>🔒</span>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required>
+
+    </div>
+
+    <button type="submit">
+
+        Login
+
+    </button>
+
+</form>
+
+<div class="auth-switch">
+
+    Don't have an account?
+
+    <span onclick="closeLogin();openSignup()">
+
+        Sign Up
+
+    </span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SIGNUP MODAL -->
+
+<div class="modal" id="signupModal">
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeSignup()">
+
+            ×
+
+        </span>
+
+        <div class="auth-top">
+
+    <img src="/static/logo.png">
+
+    <h2>Create Account</h2>
+
+    <p>
+
+        Join our logistics platform today
+
+    </p>
+
+</div>
+
+        <!-- REPLACE SIGNUP FORM WITH THIS -->
+
+<form id="signupForm">
+
+    <div class="input-group">
+
+        <span>👤</span>
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            required>
+
+    </div>
+
+    <div class="input-group">
+
+        <span>📧</span>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required>
+
+    </div>
+
+    <div class="input-group">
+
+        <span>📱</span>
+
+        <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+            required>
+
+    </div>
+
+    <div class="input-group">
+
+        <span>🔒</span>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Create Password"
+            required>
+
+    </div>
+
+    <button type="submit">
+
+        Create Account
+
+    </button>
+
+</form>
+
+<div class="auth-switch">
+
+    Already have an account?
+
+    <span onclick="closeSignup();openLogin()">
+
+        Login
+
+    </span>
+
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+
+        © 2026 Logistics Management System • All Rights Reserved
+
+        <br><br>
+
+        Fast • Secure • Trusted Logistics Across India
+
+    </p>
+
+</footer>
+
+
+
+<!-- SCRIPT -->
+
+<!-- REPLACE ONLY THIS SCRIPT SECTION -->
+
+<script>
+
+/* CREATE PARCEL */
+
+function goToCreate(){
+
+    let isLoggedIn = "{{ user }}";
+
+    if(isLoggedIn){
+
+        window.location.href = "/create";
+
+    }
+
+    else{
+
+        openLogin();
+
+    }
+
+}
+
+/* LOGIN MODAL */
+
+function openLogin(){
+
+    document.getElementById(
+        "loginModal"
+    ).style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+}
+
+function closeLogin(){
+
+    document.getElementById(
+        "loginModal"
+    ).style.display = "none";
+
+    document.body.style.overflow = "auto";
+
+}
+
+/* SIGNUP MODAL */
+
+function openSignup(){
+
+    document.getElementById(
+        "signupModal"
+    ).style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+}
+
+function closeSignup(){
+
+    document.getElementById(
+        "signupModal"
+    ).style.display = "none";
+
+    document.body.style.overflow = "auto";
+
+}
+
+/* USER DROPDOWN */
+
+function toggleDropdown(){
+
+    let menu = document.getElementById(
+        "dropdownMenu"
+    );
+
+    if(menu.style.display == "block"){
+
+        menu.style.display = "none";
+
+    }
+
+    else{
+
+        menu.style.display = "block";
+
+    }
+
+}
+
+/* CLOSE DROPDOWN + MODALS */
+
+window.onclick = function(e){
+
+    /* DROPDOWN */
+
+    if(
+!e.target.closest('.user-menu')
+){
+
+        let dropdown = document.getElementById(
+            "dropdownMenu"
+        );
+
+        if(dropdown){
+
+            dropdown.style.display = "none";
+
+        }
+
+    }
+
+    /* LOGIN MODAL */
+
+    let loginModal =
+    document.getElementById(
+        "loginModal"
+    );
+
+    if(e.target == loginModal){
+
+        closeLogin();
+
+    }
+
+    /* SIGNUP MODAL */
+
+    let signupModal =
+    document.getElementById(
+        "signupModal"
+    );
+
+    if(e.target == signupModal){
+
+        closeSignup();
+
+    }
+
+}
+
+/* ESC KEY CLOSE */
+
+document.addEventListener(
+    "keydown",
+
+function(e){
+
+    if(e.key === "Escape"){
+
+        closeLogin();
+
+        closeSignup();
+
+    }
+
+});
+
+/* LOGIN SUBMIT */
+
+document.getElementById(
+    "loginForm"
+).addEventListener(
+    "submit",
+
+function(e){
+
+    e.preventDefault();
+
+    let btn =
+    this.querySelector("button");
+
+    btn.innerHTML = "Please Wait...";
+
+    btn.disabled = true;
+
+    let formData =
+    new FormData(this);
+
+    fetch("/login",{
+
+        method:"POST",
+
+        body:formData
+
+    })
+
+    .then(res => res.text())
+
+    .then(response => {
+
+        response =
+        response.trim();
+
+        if(response == "success"){
+
+    btn.innerHTML =
+    "Login Successful ✓";
+
+    setTimeout(() => {
+
+        closeLogin();
+
+        location.reload();
+
+    },800);
+
+}
+
+else if(response == "admin"){
+
+    btn.innerHTML =
+    "Redirecting...";
+
+    setTimeout(() => {
+
+        window.location.href =
+        "/admin";
+
+    },600);
+
+}
+
+else if(response == "vendor"){
+
+    btn.innerHTML =
+    "Redirecting...";
+
+    setTimeout(() => {
+
+        window.location.href =
+        "/vendor-dashboard";
+
+    },600);
+
+}
+
+else if(response == "hub"){
+
+    btn.innerHTML =
+    "Redirecting...";
+
+    setTimeout(() => {
+
+        window.location.href =
+        "/hub_dashboard";
+
+    },600);
+
+}
+
+else if(response == "delivery"){
+
+    btn.innerHTML =
+    "Redirecting...";
+
+    setTimeout(() => {
+
+        window.location.href =
+        "/delivery-dashboard";
+
+    },600);
+
+}
+
+else{
+
+    btn.innerHTML =
+    "Login";
+
+    btn.disabled = false;
+
+    alert(
+        "Invalid Email or Password"
+    );
+
+}
+    })
+
+    .catch(() => {
+
+        btn.innerHTML =
+        "Login";
+
+        btn.disabled = false;
+
+        alert(
+            "Something went wrong"
+        );
+
+    });
+
+});
+
+/* SIGNUP SUBMIT */
+
+document.getElementById(
+    "signupForm"
+).addEventListener(
+    "submit",
+
+function(e){
+
+    e.preventDefault();
+
+    let btn =
+    this.querySelector("button");
+
+    btn.innerHTML =
+    "Creating Account...";
+
+    btn.disabled = true;
+
+    let formData =
+    new FormData(this);
+
+    fetch("/register",{
+
+        method:"POST",
+
+        body:formData
+
+    })
+
+    .then(res => res.text())
+
+    .then(response => {
+
+        response =
+        response.trim();
+
+        if(response == "success"){
+
+            btn.innerHTML =
+            "Account Created ✓";
+
+            setTimeout(() => {
+
+                closeSignup();
+
+                openLogin();
+
+                document.getElementById(
+                    "signupForm"
+                ).reset();
+
+                btn.innerHTML =
+                "Create Account";
+
+                btn.disabled = false;
+
+            },900);
+
+        }
+
+        else if(response == "exists"){
+
+            btn.innerHTML =
+            "Create Account";
+
+            btn.disabled = false;
+
+            alert(
+                "Email already exists"
+            );
+
+        }
+
+        else{
+
+            btn.innerHTML =
+            "Create Account";
+
+            btn.disabled = false;
+
+            alert(
+                "Something went wrong"
+            );
+
+        }
+
+    })
+
+    .catch(() => {
+
+        btn.innerHTML =
+        "Create Account";
+
+        btn.disabled = false;
+
+        alert(
+            "Server Error"
+        );
+
+    });
+
+});
+
+function openVendorPopup(){
+
+    document.getElementById(
+        'vendorPopup'
+    ).style.display='flex';
+
+}
+
+function closeVendorPopup(){
+
+    document.getElementById(
+        'vendorPopup'
+    ).style.display='none';
+
+}
+
+function openHubPopup(){
+
+    document.getElementById(
+        'hubPopup'
+    ).style.display='flex';
+
+}
+
+function closeHubPopup(){
+
+    document.getElementById(
+        'hubPopup'
+    ).style.display='none';
+
+}
+
+function openDeliveryPopup(){
+
+    document.getElementById(
+        'deliveryPopup'
+    ).style.display='flex';
+
+}
+
+function closeDeliveryPopup(){
+
+    document.getElementById(
+        'deliveryPopup'
+    ).style.display='none';
+
+}
+
+</script>
+
+</body>
+
+</html>

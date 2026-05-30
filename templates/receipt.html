@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shipment Receipt</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+
+    background:#f3f4f6;
+
+    padding:30px;
+
+    overflow-x:hidden;
+
+}
+
+.receipt{
+
+    width:100%;
+
+    max-width:780px;
+
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+
+}
+
+        /* HEADER */
+
+        .top-header{
+            padding:25px 30px;
+            border-bottom:2px dashed #ddd;
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+        }
+
+        .company h1{
+            font-size:28px;
+            color:#111827;
+            margin-bottom:4px;
+        }
+
+        .company p{
+            color:#6b7280;
+            font-size:13px;
+            margin-bottom:4px;
+        }
+
+        .vendor{
+            margin-top:10px;
+            background:#f3f4f6;
+            display:inline-block;
+            padding:6px 12px;
+            border-radius:6px;
+            font-size:12px;
+            font-weight:bold;
+        }
+
+        /* RIGHT */
+
+        .right-header{
+            text-align:right;
+        }
+
+        .track-id{
+            font-size:24px;
+            font-weight:bold;
+            color:#111827;
+        }
+
+        .date{
+            color:#6b7280;
+            margin-top:5px;
+            font-size:13px;
+        }
+
+        .status{
+            margin-top:12px;
+            display:inline-block;
+            background:#e8fff3;
+            color:#0f9d58;
+            padding:6px 14px;
+            border-radius:30px;
+            font-size:12px;
+            font-weight:bold;
+            border:1px solid #b7f0cf;
+        }
+
+        .top-qr{
+            width:70px;
+            margin-top:12px;
+            border:1px solid #ddd;
+            padding:4px;
+            border-radius:8px;
+            background:white;
+        }
+
+        /* CONTENT */
+
+        .content{
+            padding:25px 30px;
+        }
+
+        /* GRID */
+
+        .grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:18px;
+
+}
+
+        .card{
+            border:1px solid #ececec;
+            border-radius:12px;
+            padding:18px;
+            background:#fff;
+        }
+
+        .card h3{
+            font-size:17px;
+            margin-bottom:14px;
+            color:#2563eb;
+        }
+
+        .card p{
+            font-size:13px;
+            margin-bottom:8px;
+            color:#374151;
+            line-height:1.5;
+        }
+
+        /* SHIPMENT */
+
+        .shipment{
+            margin-top:25px;
+        }
+
+        .section-title{
+            font-size:18px;
+            color:#2563eb;
+            margin-bottom:14px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            overflow:hidden;
+            border-radius:10px;
+        }
+
+        .table-wrapper{
+
+          width:100%;
+
+          overflow-x:auto;
+
+}
+
+        table th{
+            background:#111827;
+            color:white;
+            padding:13px;
+            font-size:13px;
+            text-align:left;
+        }
+
+        table td{
+            padding:13px;
+            border-bottom:1px solid #eee;
+            font-size:13px;
+        }
+
+        /* TOTAL */
+
+        .total-box{
+            display:flex;
+            justify-content:flex-end;
+            margin-top:25px;
+        }
+
+        .total{
+            width:290px;
+            border:1px solid #ececec;
+            border-radius:12px;
+            padding:18px;
+            background:#fafafa;
+        }
+
+        .total-row{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:12px;
+            font-size:14px;
+            color:#374151;
+        }
+
+        .grand-total{
+            border-top:2px dashed #ccc;
+            padding-top:14px;
+            margin-top:10px;
+            font-size:22px;
+            font-weight:bold;
+            color:#2563eb;
+        }
+
+        /* BARCODE */
+
+        .barcode-section{
+            margin-top:30px;
+            padding-top:25px;
+            border-top:1px dashed #ccc;
+            text-align:center;
+        }
+
+        .barcode-img{
+            width:260px;
+            object-fit:contain;
+        }
+
+        .barcode-number{
+            margin-top:8px;
+            font-size:13px;
+            letter-spacing:2px;
+            font-weight:bold;
+            color:#374151;
+        }
+
+        /* FOOTER */
+
+        .footer{
+            margin-top:30px;
+            border-top:1px dashed #ddd;
+            padding-top:20px;
+            text-align:center;
+            color:#6b7280;
+            font-size:12px;
+            line-height:1.8;
+        }
+
+        /* BUTTONS */
+
+        .btns{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:28px;
+
+    flex-wrap:wrap;
+
+}
+        .btn{
+            flex:1;
+            padding:13px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:14px;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        .print-btn{
+            background:#2563eb;
+            color:white;
+        }
+
+        .home-btn{
+            background:#111827;
+            color:white;
+        }
+
+        .btn:hover{
+            transform:translateY(-2px);
+        }
+
+        /* PRINT */
+
+        @media print{
+
+            body{
+                background:white;
+                padding:0;
+            }
+
+            .btns{
+                display:none;
+            }
+
+            .receipt{
+                width:100%;
+                box-shadow:none;
+                border-radius:0;
+            }
+        }
+
+
+        .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    margin-bottom:25px;
+    width:fit-content;
+}
+
+.logo img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(255,255,255,0.2);
+}
+
+.logo span{
+    color:rgb(22, 21, 21);
+    font-size:24px;
+    font-weight:700;
+}
+
+
+
+        /* RESPONSIVE */
+
+@media(max-width:768px){
+
+    body{
+
+        padding:12px;
+
+    }
+
+    .top-header{
+
+        flex-direction:column;
+
+        gap:20px;
+
+    }
+
+    .right-header{
+
+        text-align:left;
+
+        width:100%;
+
+    }
+
+    .content{
+
+        padding:20px;
+
+    }
+
+    .card{
+
+        padding:16px;
+
+    }
+
+    .track-id{
+
+        font-size:20px;
+
+    }
+
+    .company h1{
+
+        font-size:24px;
+
+    }
+
+    .total{
+
+        width:100%;
+
+    }
+
+    .btn{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .company h1{
+
+        font-size:22px;
+
+    }
+
+    .section-title{
+
+        font-size:16px;
+
+    }
+
+    .top-qr{
+
+        width:60px;
+
+    }
+
+    .logo img{
+
+        width:50px;
+        height:50px;
+
+    }
+
+}
+
+    </style>
+</head>
+
+<body>
+
+    <a href="/" class="logo">
+
+        <img src="/static/logo.png">
+
+    </a>
+<div class="receipt">
+
+    <!-- HEADER -->
+
+    <div class="top-header">
+
+        <div class="company">
+
+            <h1>🚚 LMS Logistics</h1>
+
+            <p>Fast • Secure • Reliable Delivery</p>
+
+            <div class="vendor">
+                Vendor ID : LMS-VEN-2045
+            </div>
+
+        </div>
+
+        <div class="right-header">
+
+            <div class="track-id">
+                {{ tracking_id }}
+            </div>
+
+            <div class="date">
+                {{ timestamp }}
+            </div>
+
+            <div class="status">
+                BOOKED
+            </div>
+
+            <br>
+
+            <img src="{{ url_for('static', filename=qr_path) }}"
+                 class="top-qr">
+
+        </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <!-- SENDER RECEIVER -->
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>📤 Sender Details</h3>
+
+                <p><b>Name:</b> {{ data.sender_name }}</p>
+
+                <p><b>Phone:</b> {{ data.sender_phone }}</p>
+
+                <p><b>Email:</b> {{ data.sender_email }}</p>
+
+                <p><b>Pincode:</b> {{ data.sender_pincode }}</p>
+
+                <p><b>District:</b> {{ sender_info.district }}</p>
+
+                <p><b>State:</b> {{ sender_info.state }}</p>
+
+                <p><b>Address:</b> {{ data.sender_address }}</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>📥 Receiver Details</h3>
+
+                <p><b>Name:</b> {{ data.receiver_name }}</p>
+
+                <p><b>Phone:</b> {{ data.receiver_phone }}</p>
+
+                <p><b>Email:</b> {{ data.receiver_email }}</p>
+
+                <p><b>Pincode:</b> {{ data.receiver_pincode }}</p>
+
+                <p><b>District:</b> {{ receiver_info.district }}</p>
+
+                <p><b>State:</b> {{ receiver_info.state }}</p>
+
+                <p><b>Address:</b> {{ data.receiver_address }}</p>
+
+            </div>
+
+        </div>
+
+        <!-- SHIPMENT -->
+
+        <div class="shipment">
+
+            <div class="section-title">
+                📦 Shipment Information
+            </div>
+            <div class="table-wrapper">
+
+            <table>
+
+                <tr>
+                    <th>Parcel Type</th>
+                    <th>Transport</th>
+                    <th>Weight</th>
+                    <th>Distance</th>
+                </tr>
+
+                <tr>
+                    <td>{{ data.parcel_type }}</td>
+                    <td>{{ data.transport }}</td>
+                    <td>{{ data.weight }} kg</td>
+                    <td>{{ distance }} km</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- TOTAL -->
+
+        <div class="total-box">
+
+            <div class="total">
+
+                <div class="total-row">
+                    <span>Base Charge</span>
+                    <span>₹50</span>
+                </div>
+
+                <div class="total-row">
+                    <span>Weight Charge</span>
+                    <span>Included</span>
+                </div>
+
+                <div class="total-row">
+                    <span>Distance Charge</span>
+                    <span>Included</span>
+                </div>
+
+                <div class="total-row">
+                    <span>GST</span>
+                    <span>Included</span>
+                </div>
+
+                <div class="total-row grand-total">
+                    <span>Total</span>
+                    <span>₹{{ price }}</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BARCODE -->
+
+        <div class="barcode-section">
+
+            <img src="{{ url_for('static', filename=barcode_path) }}"
+                 class="barcode-img">
+
+            <div class="barcode-number">
+                {{ tracking_id }}
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            <p>LMS Logistics Pvt Ltd • India</p>
+
+            <p>Customer Support : +91 90000 00000</p>
+
+            <p>Email : support@lmslogistics.com</p>
+
+            <p>Thank you for choosing LMS Logistics ❤️</p>
+
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="btns">
+
+            <button class="btn print-btn"
+                    onclick="window.print()">
+
+                🖨 Print Receipt
+
+            </button>
+
+            <button class="btn home-btn"
+                    onclick="window.location.href='/'">
+
+                ⬅ Back Home
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

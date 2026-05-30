@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+Delivery Dashboard
+
+</title>
+
+<!-- QR SCANNER -->
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<!-- CHART -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- FONT AWESOME -->
+
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+rel="stylesheet">
+
+<style>
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+body{
+
+    background:#eef2ff;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+    width:270px;
+
+    height:100vh;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    background:
+    linear-gradient(
+    180deg,
+    #111827,
+    #1f2937);
+
+    padding:25px;
+
+    overflow:auto;
+
+    transition:0.4s;
+
+    z-index:1000;
+
+}
+
+.sidebar.collapsed{
+
+    width:90px;
+
+}
+
+.logo{
+
+    text-align:center;
+
+    color:white;
+
+    margin-bottom:35px;
+
+    cursor:pointer;
+
+}
+
+.logo h1{
+
+    font-size:55px;
+
+}
+
+.logo h2{
+
+    margin-top:10px;
+
+    font-size:28px;
+
+}
+
+.sidebar.collapsed .logo h2{
+
+    display:none;
+
+}
+
+.sidebar a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-decoration:none;
+
+    color:#d1d5db;
+
+    padding:16px 18px;
+
+    border-radius:16px;
+
+    margin-bottom:14px;
+
+    transition:0.3s;
+
+    font-weight:600;
+
+}
+
+.sidebar a:hover{
+
+    background:#2563eb;
+
+    color:white;
+
+    transform:translateX(5px);
+
+}
+
+.sidebar.collapsed a span{
+
+    display:none;
+
+}
+
+.sidebar.collapsed a{
+
+    justify-content:center;
+
+}
+
+/* TOGGLE */
+
+.toggle-btn{
+
+    position:fixed;
+
+    top:15px;
+    left:15px;
+
+    width:45px;
+    height:45px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    z-index:2000;
+
+}
+
+/* MAIN */
+
+.main{
+
+    margin-left:270px;
+
+    padding:30px;
+
+    transition:0.4s;
+
+}
+
+.main.collapsed{
+
+    margin-left:90px;
+
+}
+
+/* TOPBAR */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+}
+
+.topbar h1{
+
+    font-size:38px;
+
+    color:#111827;
+
+}
+
+.topbar p{
+
+    color:#6b7280;
+
+    margin-top:5px;
+
+}
+
+.staff-box{
+
+    background:white;
+
+    padding:15px 24px;
+
+    border-radius:18px;
+
+    font-weight:700;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.06);
+
+}
+
+/* CARDS */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.card-box{
+
+    border-radius:28px;
+
+    padding:28px;
+
+    color:white;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 12px 25px rgba(0,0,0,0.08);
+
+}
+
+.card-box::before{
+
+    content:'';
+
+    position:absolute;
+
+    top:-40px;
+    right:-40px;
+
+    width:120px;
+    height:120px;
+
+    background:
+    rgba(255,255,255,0.12);
+
+    border-radius:50%;
+
+}
+
+.card-box h2{
+
+    font-size:42px;
+
+}
+
+.card-box p{
+
+    margin-top:10px;
+
+    font-weight:600;
+
+}
+
+.blue{
+    background:#2563eb;
+}
+
+.green{
+    background:#16a34a;
+}
+
+.orange{
+    background:#f59e0b;
+}
+
+.purple{
+    background:#7c3aed;
+}
+
+/* SECTION */
+
+.section{
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.05);
+
+}
+
+.section-title{
+
+    font-size:28px;
+
+    margin-bottom:20px;
+
+    color:#111827;
+
+}
+
+/* SCANNER */
+
+#reader{
+
+    width:100%;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    border:5px solid #dbeafe;
+
+    margin-bottom:20px;
+
+}
+
+/* SUCCESS */
+
+.scan-success{
+
+    display:none;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+/* PARCEL BOX */
+
+.parcel-box{
+
+    display:none;
+
+    background:#f9fafb;
+
+    border:1px solid #e5e7eb;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    margin-bottom:25px;
+
+}
+
+.parcel-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
+
+}
+
+.parcel-item{
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:16px;
+
+    padding:15px;
+
+}
+
+.parcel-item b{
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+/* FORM */
+
+.form-group{
+
+    margin-bottom:20px;
+
+}
+
+label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-weight:bold;
+
+    color:#374151;
+
+}
+
+input,
+select{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:1px solid #d1d5db;
+
+    outline:none;
+
+}
+
+input:focus,
+select:focus{
+
+    border-color:#2563eb;
+
+}
+
+/* BUTTONS */
+
+.status-buttons{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:14px;
+
+    margin-bottom:25px;
+
+}
+
+.quick-btn{
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#f3f4f6;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:0.3s;
+
+}
+
+.quick-btn:hover{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.submit-btn{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+    45deg,
+    #2563eb,
+    #1d4ed8);
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+/* TABLE */
+
+.table-responsive{
+
+    overflow:auto;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:1000px;
+
+}
+
+th{
+
+    background:#eff6ff;
+
+    color:#1d4ed8;
+
+    padding:16px;
+
+    text-align:left;
+
+}
+
+td{
+
+    padding:16px;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+tr:hover{
+
+    background:#f9fbff;
+
+}
+
+/* STATUS */
+
+.status{
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.delivered{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.transit{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+/* CHART */
+
+.chart-box{
+
+    width:350px;
+
+    margin:auto;
+
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOGGLE -->
+
+<button
+id="toggleBtn"
+class="toggle-btn">
+
+☰
+
+</button>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div
+    class="logo"
+    id="logoToggle">
+
+        <h1>
+
+            🚚
+
+        </h1>
+
+        <h2>
+
+            Delivery Panel
+
+        </h2>
+
+    </div>
+
+    <a href="#dashboard">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        <span>
+
+            Dashboard
+
+        </span>
+
+    </a>
+
+    <a href="#scanner">
+
+        <i class="fa-solid fa-qrcode"></i>
+
+        <span>
+
+            QR Scanner
+
+        </span>
+
+    </a>
+
+    <a href="#orders">
+
+        <i class="fa-solid fa-box"></i>
+
+        <span>
+
+            Assigned Orders
+
+        </span>
+
+    </a>
+
+    <a href="#analytics">
+
+        <i class="fa-solid fa-chart-pie"></i>
+
+        <span>
+
+            Analytics
+
+        </span>
+
+    </a>
+
+    <a href="/logout">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>
+
+            Logout
+
+        </span>
+
+    </a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div
+    class="topbar"
+    id="dashboard">
+
+        <div>
+
+            <h1>
+
+                Delivery Dashboard
+
+            </h1>
+
+            <p>
+
+                Real-Time Shipment Management System
+
+            </p>
+
+        </div>
+
+        <div class="staff-box">
+
+            👨‍💼 {{ session.staff }}
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="cards">
+
+        <div class="card-box blue">
+
+            <h2>
+
+                {{ total_orders }}
+
+            </h2>
+
+            <p>
+
+                Total Orders
+
+            </p>
+
+        </div>
+
+        <div class="card-box green">
+
+            <h2>
+
+                {{ delivered }}
+
+            </h2>
+
+            <p>
+
+                Delivered Orders
+
+            </p>
+
+        </div>
+
+        <div class="card-box orange">
+
+            <h2>
+
+                {{ pending }}
+
+            </h2>
+
+            <p>
+
+                Pending Orders
+
+            </p>
+
+        </div>
+
+        <div class="card-box purple">
+
+            <h2>
+
+                ₹{{ earnings }}
+
+            </h2>
+
+            <p>
+
+                Delivery Earnings
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- QR SCANNER -->
+
+    <div
+    class="section"
+    id="scanner">
+
+        <h2 class="section-title">
+
+            📷 QR / Barcode Scanner
+
+        </h2>
+
+        <div id="reader"></div>
+
+        <div
+        class="scan-success"
+        id="scanSuccess">
+
+            ✅ Parcel Scanned Successfully
+
+        </div>
+
+        <!-- PARCEL DETAILS -->
+
+        <div
+        class="parcel-box"
+        id="parcelBox">
+
+            <h3
+            style="
+            margin-bottom:20px;
+            ">
+
+                📦 Parcel Details
+
+            </h3>
+
+            <div class="parcel-grid">
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Tracking ID
+
+                    </b>
+
+                    <p id="detail_tracking"></p>
+
+                </div>
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Receiver
+
+                    </b>
+
+                    <p id="detail_receiver"></p>
+
+                </div>
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Destination
+
+                    </b>
+
+                    <p id="detail_destination"></p>
+
+                </div>
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Weight
+
+                    </b>
+
+                    <p id="detail_weight"></p>
+
+                </div>
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Transport
+
+                    </b>
+
+                    <p id="detail_transport"></p>
+
+                </div>
+
+                <div class="parcel-item">
+
+                    <b>
+
+                        Status
+
+                    </b>
+
+                    <p id="detail_status"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FORM -->
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label>
+
+                    Tracking ID
+
+                </label>
+
+                <input
+                type="text"
+
+                id="tracking_id"
+
+                name="tracking_id"
+
+                placeholder="Scan or Enter Tracking ID"
+
+                required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Current Hub
+
+                </label>
+
+                <input
+                type="text"
+
+                name="location"
+
+                placeholder="Example : Hyderabad Hub"
+
+                required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Shipment Status
+
+                </label>
+
+                <select
+                id="status"
+
+                name="status"
+
+                required>
+
+                    <option value="">
+                        Select Status
+                    </option>
+
+                    <option>
+                        Picked Up
+                    </option>
+
+                    <option>
+                        In Transit
+                    </option>
+
+                    <option>
+                        Reached Hub
+                    </option>
+
+                    <option>
+                        Out For Delivery
+                    </option>
+
+                    <option>
+                        Delivered
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- QUICK BUTTONS -->
+
+            <div class="status-buttons">
+
+                <button
+                type="button"
+
+                class="quick-btn"
+
+                onclick="setStatus('Picked Up')">
+
+                    📦 Picked Up
+
+                </button>
+
+                <button
+                type="button"
+
+                class="quick-btn"
+
+                onclick="setStatus('Reached Hub')">
+
+                    🏢 Reached Hub
+
+                </button>
+
+                <button
+                type="button"
+
+                class="quick-btn"
+
+                onclick="setStatus('Out For Delivery')">
+
+                    🚚 Out For Delivery
+
+                </button>
+
+                <button
+                type="button"
+
+                class="quick-btn"
+
+                onclick="setStatus('Delivered')">
+
+                    ✅ Delivered
+
+                </button>
+
+            </div>
+
+            <button
+            type="submit"
+
+            class="submit-btn">
+
+                🚀 Update Shipment
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ASSIGNED ORDERS -->
+
+    <div
+    class="section"
+    id="orders">
+
+        <h2 class="section-title">
+
+            🚚 Assigned Parcels
+
+        </h2>
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Tracking</th>
+
+                        <th>Receiver</th>
+
+                        <th>Phone</th>
+
+                        <th>Current Hub</th>
+
+                        <th>Status</th>
+
+                        <th>Transport</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for p in parcels %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ p.tracking_id }}
+
+                        </td>
+
+                        <td>
+
+                            {{ p.receiver_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ p.receiver_phone }}
+
+                        </td>
+
+                        <td>
+
+                            {{ p.current_hub }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="status
+
+                            {% if p.status == 'Delivered' %}
+                            delivered
+                            {% else %}
+                            transit
+                            {% endif %}
+
+                            ">
+
+                                {{ p.status }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ p.transport }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- ANALYTICS -->
+
+    <div
+    class="section"
+    id="analytics">
+
+        <h2 class="section-title">
+
+            📊 Delivery Analytics
+
+        </h2>
+
+        <div class="chart-box">
+
+            <canvas
+            id="deliveryChart">
+
+            </canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- QR SCRIPT -->
+
+<script>
+
+function setStatus(value){
+
+    document.getElementById(
+    "status"
+    ).value = value;
+
+}
+
+function onScanSuccess(decodedText){
+
+    document.getElementById(
+    "tracking_id"
+    ).value = decodedText;
+
+    document.getElementById(
+    "scanSuccess"
+    ).style.display = "block";
+
+    fetch('/get-parcel/' + decodedText)
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(data.tracking_id){
+
+            document.getElementById(
+            "parcelBox"
+            ).style.display = "block";
+
+            document.getElementById(
+            "detail_tracking"
+            ).innerHTML = data.tracking_id;
+
+            document.getElementById(
+            "detail_receiver"
+            ).innerHTML = data.receiver;
+
+            document.getElementById(
+            "detail_destination"
+            ).innerHTML = data.destination;
+
+            document.getElementById(
+            "detail_weight"
+            ).innerHTML = data.weight;
+
+            document.getElementById(
+            "detail_transport"
+            ).innerHTML = data.transport;
+
+            document.getElementById(
+            "detail_status"
+            ).innerHTML = data.status;
+
+        }
+
+    });
+
+    setTimeout(() => {
+
+        document.getElementById(
+        "scanSuccess"
+        ).style.display = "none";
+
+    },2500);
+
+}
+
+let scanner =
+new Html5QrcodeScanner(
+
+    "reader",
+
+    {
+
+        fps:10,
+        qrbox:250
+
+    },
+
+    false
+
+);
+
+scanner.render(onScanSuccess);
+
+</script>
+
+<!-- CHART -->
+
+<script>
+
+const ctx =
+document.getElementById(
+'deliveryChart'
+);
+
+new Chart(ctx, {
+
+    type:'pie',
+
+    data:{
+
+        labels:[
+
+            'Delivered',
+            'Pending'
+
+        ],
+
+        datasets:[{
+
+            data:[
+
+                Number("{{ delivered }}"),
+                Number("{{ pending }}")
+
+            ],
+
+            backgroundColor:[
+
+                '#16a34a',
+                '#f59e0b'
+
+            ]
+
+        }]
+
+    }
+
+});
+
+</script>
+
+<!-- SIDEBAR -->
+
+<script>
+
+const toggleBtn =
+document.getElementById(
+'toggleBtn'
+);
+
+const logoToggle =
+document.getElementById(
+'logoToggle'
+);
+
+const sidebar =
+document.querySelector(
+'.sidebar'
+);
+
+const main =
+document.querySelector(
+'.main'
+);
+
+function toggleSidebar(){
+
+    sidebar.classList.toggle(
+    'collapsed'
+    );
+
+    main.classList.toggle(
+    'collapsed'
+    );
+
+}
+
+toggleBtn.onclick =
+toggleSidebar;
+
+logoToggle.onclick =
+toggleSidebar;
+
+</script>
+
+</body>
+
+</html>

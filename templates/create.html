@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Create Consignment</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* BACKGROUND */
+
+body{
+
+    background:
+    linear-gradient(to right,#e3f2fd,#f5faff);
+
+    padding:25px;
+
+    overflow-x:hidden;
+
+}
+
+/* MAIN CONTAINER */
+
+.container{
+
+    width:100%;
+
+    max-width:1300px;
+
+    margin:auto;
+
+    padding:0 10px;
+
+}
+/* CARD */
+
+.form-box{
+
+    width:100%;
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:28px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,0.08);
+
+}
+
+/* TITLE */
+
+h2{
+    text-align:center;
+    margin-bottom:35px;
+    color:#0a192f;
+    font-size:34px;
+}
+
+/* GRID */
+
+.flex{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:25px;
+
+}
+
+/* SECTION */
+
+.section-box{
+    padding:22px;
+    border-radius:22px;
+    background:#f9fbff;
+    border:1px solid #e3eefc;
+    margin-bottom:22px;
+}
+
+.section-title{
+    margin-bottom:18px;
+    font-size:17px;
+    font-weight:700;
+    color:#0072ff;
+}
+
+/* INPUTS */
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:15px;
+    border:1px solid #dbeafe;
+    outline:none;
+    font-size:14px;
+    transition:0.3s;
+    background:white;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#0072ff;
+    box-shadow:0 0 0 4px rgba(0,114,255,0.1);
+}
+
+textarea{
+    height:90px;
+    resize:none;
+}
+
+/* FIX OVERFLOW */
+
+.half{
+    width:100%;
+    min-width:0;
+}
+
+/* DIMENSIONS */
+
+.dim-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.dim-row input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    margin-bottom:0;
+    cursor:pointer;
+}
+
+.dim-row input[type="text"]{
+    margin-bottom:0;
+}
+
+/* BUTTON */
+
+button{
+    width:100%;
+    padding:18px;
+    margin-top:10px;
+    background:linear-gradient(45deg,#0072ff,#00c6ff);
+    border:none;
+    color:white;
+    font-size:16px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .flex{
+        grid-template-columns:1fr;
+    }
+
+    .form-box{
+        padding:22px;
+    }
+
+    h2{
+        font-size:28px;
+    }
+
+    body{
+        padding:15px;
+    }
+
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    margin-bottom:25px;
+    width:fit-content;
+}
+
+.logo img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(255,255,255,0.2);
+}
+
+.logo span{
+    color:rgb(22, 21, 21);
+    font-size:24px;
+    font-weight:700;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    body{
+
+        padding:12px;
+
+    }
+
+    .form-box{
+
+        padding:22px;
+
+        border-radius:22px;
+
+    }
+
+    h2{
+
+        font-size:28px;
+
+    }
+
+    .section-title{
+
+        font-size:16px;
+
+    }
+
+    input,
+    select,
+    textarea{
+
+        padding:14px;
+
+        font-size:14px;
+
+    }
+
+    button{
+
+        padding:16px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    h2{
+
+        font-size:24px;
+
+    }
+
+    .logo img{
+
+        width:50px;
+        height:50px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+        <a href="/" class="logo">
+
+    <img src="/static/logo.png">
+    
+
+    
+
+</a>
+<div class="container">
+
+<div class="form-box">
+
+<h2>🚚 Create Consignment</h2>
+
+<form method="POST">
+
+<!-- SHIPMENT -->
+
+<div class="section-box">
+
+<div class="section-title">
+
+    Shipment Details
+
+</div>
+
+<div class="flex">
+
+<select name="transport">
+
+<option>Surface (Road)</option>
+<option>Express (Air)</option>
+<option>Heavy Cargo</option>
+
+</select>
+
+<select name="parcel_type">
+
+<option selected>General Goods</option>
+<option>Fragile</option>
+<option>Liquid</option>
+<option>Electronics</option>
+
+</select>
+
+</div>
+
+</div>
+
+<!-- SENDER + RECEIVER -->
+
+<div class="flex">
+
+<!-- SENDER -->
+
+<div class="half section-box">
+
+<div class="section-title">
+
+    Pickup (Sender)
+
+</div>
+
+<input
+    name="sender_name"
+    placeholder="Full Name"
+    required>
+
+<input
+    name="sender_phone"
+    placeholder="Phone"
+    required>
+
+<input
+    name="sender_email"
+    placeholder="Email">
+
+<textarea
+    name="sender_address"
+    placeholder="Address"></textarea>
+
+<select name="sender_state">
+
+<option>Andhra Pradesh</option>
+<option>Telangana</option>
+<option>Tamil Nadu</option>
+<option>Karnataka</option>
+<option>Maharashtra</option>
+<option>Kerala</option>
+<option>Delhi</option>
+<option>Uttar Pradesh</option>
+<option>Gujarat</option>
+<option>Rajasthan</option>
+<option>Punjab</option>
+<option>West Bengal</option>
+<option>Odisha</option>
+<option>Bihar</option>
+<option>Madhya Pradesh</option>
+<option>Haryana</option>
+<option>Assam</option>
+<option>Jharkhand</option>
+<option>Chhattisgarh</option>
+<option>Goa</option>
+<option>Himachal Pradesh</option>
+<option>Uttarakhand</option>
+<option>Tripura</option>
+<option>Meghalaya</option>
+<option>Manipur</option>
+<option>Mizoram</option>
+<option>Nagaland</option>
+<option>Sikkim</option>
+<option>Arunachal Pradesh</option>
+
+</select>
+
+<input
+    name="sender_city"
+    placeholder="Sender City"
+    required>
+
+<input
+    name="sender_pincode"
+    placeholder="Sender Pincode"
+    required>
+
+</div>
+
+<!-- RECEIVER -->
+
+<div class="half section-box">
+
+<div class="section-title">
+
+    Delivery (Receiver)
+
+</div>
+
+<input
+    name="receiver_name"
+    placeholder="Full Name"
+    required>
+
+<input
+    name="receiver_phone"
+    placeholder="Phone"
+    required>
+
+<input
+    name="receiver_email"
+    placeholder="Email">
+
+<textarea
+    name="receiver_address"
+    placeholder="Address"></textarea>
+
+<select name="receiver_state">
+
+<option>Andhra Pradesh</option>
+<option>Telangana</option>
+<option>Tamil Nadu</option>
+<option>Karnataka</option>
+<option>Maharashtra</option>
+<option>Kerala</option>
+<option>Delhi</option>
+<option>Uttar Pradesh</option>
+<option>Gujarat</option>
+<option>Rajasthan</option>
+<option>Punjab</option>
+<option>West Bengal</option>
+<option>Odisha</option>
+<option>Bihar</option>
+<option>Madhya Pradesh</option>
+<option>Haryana</option>
+<option>Assam</option>
+<option>Jharkhand</option>
+<option>Chhattisgarh</option>
+<option>Goa</option>
+<option>Himachal Pradesh</option>
+<option>Uttarakhand</option>
+<option>Tripura</option>
+<option>Meghalaya</option>
+<option>Manipur</option>
+<option>Mizoram</option>
+<option>Nagaland</option>
+<option>Sikkim</option>
+<option>Arunachal Pradesh</option>
+
+</select>
+
+<input
+    name="receiver_city"
+    placeholder="Receiver City"
+    required>
+
+<input
+    name="receiver_pincode"
+    placeholder="Receiver Pincode"
+    required>
+
+</div>
+
+</div>
+
+<!-- WEIGHT -->
+
+<div class="section-box">
+
+<div class="section-title">
+
+    Weight
+
+</div>
+
+<input
+    name="weight"
+    placeholder="Weight (kg)"
+    required>
+
+</div>
+
+<!-- DIMENSIONS -->
+
+<div class="section-box">
+
+<div class="section-title">
+
+    Dimensions (Optional)
+
+</div>
+
+<div class="dim-row">
+
+<input
+    type="checkbox"
+    onclick="toggleField('length')">
+
+<input
+    type="text"
+    id="length"
+    name="length"
+    placeholder="Length (cm)"
+    disabled>
+
+</div>
+
+<div class="dim-row">
+
+<input
+    type="checkbox"
+    onclick="toggleField('width')">
+
+<input
+    type="text"
+    id="width"
+    name="width"
+    placeholder="Width (cm)"
+    disabled>
+
+</div>
+
+<div class="dim-row">
+
+<input
+    type="checkbox"
+    onclick="toggleField('height')">
+
+<input
+    type="text"
+    id="height"
+    name="height"
+    placeholder="Height (cm)"
+    disabled>
+
+</div>
+
+</div>
+
+<button type="submit">
+
+    📦 Book Consignment
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleField(id){
+
+    let field = document.getElementById(id);
+
+    field.disabled = !field.disabled;
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1789 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Orders</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+
+            background:#eef4ff;
+
+            padding:25px;
+
+            color:#111827;
+
+        }
+
+        .container{
+
+            max-width:1400px;
+
+            margin:auto;
+
+        }
+
+        /* TOP */
+
+        .top-bar{
+
+            background:
+            linear-gradient(45deg,#111827,#1f2937);
+
+            color:white;
+
+            padding:35px;
+
+            border-radius:35px;
+
+            margin-bottom:35px;
+
+            box-shadow:
+            0 15px 35px rgba(0,0,0,0.12);
+
+        }
+
+        .top-bar h1{
+
+            font-size:42px;
+
+            margin-bottom:10px;
+
+        }
+
+        .top-bar p{
+
+            opacity:0.9;
+
+            line-height:1.8;
+
+        }
+
+        /* FILTERS */
+
+        .filters{
+
+            display:flex;
+
+            gap:14px;
+
+            flex-wrap:wrap;
+
+            margin-bottom:30px;
+
+        }
+
+        .filter-btn{
+
+            padding:14px 24px;
+
+            border:none;
+
+            border-radius:50px;
+
+            background:white;
+
+            cursor:pointer;
+
+            font-weight:bold;
+
+            transition:0.3s;
+
+            box-shadow:
+            0 8px 20px rgba(0,0,0,0.08);
+
+        }
+
+        .filter-btn:hover{
+
+            background:#2563eb;
+
+            color:white;
+
+            transform:translateY(-2px);
+
+        }
+
+        /* GRID */
+
+        .orders-grid{
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(400px,1fr));
+
+            gap:30px;
+
+        }
+
+        /* CARD */
+
+        .order-card{
+
+            background:white;
+
+            border-radius:35px;
+
+            padding:30px;
+
+            position:relative;
+
+            overflow:hidden;
+
+            box-shadow:
+            0 12px 30px rgba(0,0,0,0.08);
+
+            transition:0.35s;
+
+        }
+
+        .order-card:hover{
+
+            transform:translateY(-6px);
+
+        }
+
+        .order-card::before{
+
+            content:'';
+
+            position:absolute;
+
+            top:0;
+            left:0;
+
+            width:100%;
+            height:7px;
+
+            background:
+            linear-gradient(45deg,#2563eb,#00c6ff);
+
+        }
+
+        /* CARD TOP */
+
+        .card-top{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:flex-start;
+
+            gap:15px;
+
+            margin-bottom:25px;
+
+        }
+
+        .tracking{
+
+            font-size:30px;
+
+            font-weight:800;
+
+        }
+
+        .date{
+
+            margin-top:7px;
+
+            color:#6b7280;
+
+            font-size:13px;
+
+        }
+
+        /* STATUS */
+
+        .status{
+
+            padding:10px 18px;
+
+            border-radius:50px;
+
+            color:white;
+
+            font-size:13px;
+
+            font-weight:bold;
+
+        }
+
+        .Booked{
+            background:#2563eb;
+        }
+
+        .Pickup-Requested{
+            background:#2563eb;
+        }
+
+        .Delivered{
+            background:#16a34a;
+        }
+
+        .Cancelled{
+            background:#dc2626;
+        }
+
+        /* INFO GRID */
+
+        .info-grid{
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:18px;
+
+            margin-bottom:28px;
+
+        }
+
+        .info-box{
+
+            background:#f9fbff;
+
+            border:1px solid #e5edff;
+
+            border-radius:22px;
+
+            padding:18px;
+
+        }
+
+        .info-box h4{
+
+            color:#6b7280;
+
+            font-size:13px;
+
+            margin-bottom:8px;
+
+        }
+
+        .info-box p{
+
+            font-weight:bold;
+
+            font-size:17px;
+
+            color:#111827;
+
+            line-height:1.6;
+
+        }
+
+        /* STEPS */
+
+        .delivery-steps{
+
+            display:flex;
+
+            gap:10px;
+
+            flex-wrap:wrap;
+
+            margin-bottom:25px;
+
+        }
+
+        .step{
+
+            flex:1;
+
+            min-width:80px;
+
+            background:#f3f4f6;
+
+            padding:12px;
+
+            border-radius:14px;
+
+            text-align:center;
+
+            font-size:13px;
+
+            font-weight:bold;
+
+        }
+
+        .step.active{
+
+            background:#dbeafe;
+
+            color:#2563eb;
+
+        }
+
+        /* PROGRESS */
+
+        .progress-section{
+
+            margin-bottom:28px;
+
+        }
+
+        .progress-title{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            margin-bottom:12px;
+
+            font-weight:bold;
+
+        }
+
+        .progress-bar{
+
+            width:100%;
+
+            height:12px;
+
+            background:#dbeafe;
+
+            border-radius:30px;
+
+            overflow:hidden;
+
+        }
+
+        .progress-fill{
+
+            height:100%;
+
+            border-radius:30px;
+
+            background:
+            linear-gradient(45deg,#2563eb,#00c6ff);
+
+        }
+
+        /* BUTTONS */
+
+        .buttons{
+
+            display:flex;
+
+            gap:15px;
+
+            flex-wrap:wrap;
+
+        }
+
+        .btn{
+
+            flex:1;
+
+            padding:16px;
+
+            border:none;
+
+            border-radius:18px;
+
+            text-decoration:none;
+
+            text-align:center;
+
+            font-weight:bold;
+
+            transition:0.3s;
+
+        }
+
+        .btn:hover{
+
+            transform:translateY(-2px);
+
+        }
+
+        .track-btn{
+
+            background:
+            linear-gradient(45deg,#2563eb,#1d4ed8);
+
+            color:white;
+
+        }
+
+        .receipt-btn{
+
+            background:#ecfeff;
+
+            color:#0891b2;
+
+        }
+
+        .cancel-btn{
+
+            background:#fee2e2;
+
+            color:#dc2626;
+
+        }
+
+        
+.return-btn{
+
+    background:#fff7ed;
+
+    color:#ea580c;
+
+}
+
+.reason-select{
+
+    width:100%;
+
+    padding:12px;
+
+    border-radius:14px;
+
+    border:1px solid #dbeafe;
+
+    margin-bottom:10px;
+
+    outline:none;
+
+    background:white;
+
+}
+
+
+/* POPUP */
+
+.popup-overlay{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.5);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999;
+
+}
+
+.popup-box{
+
+    background:white;
+
+    width:90%;
+    max-width:420px;
+
+    padding:30px;
+
+    border-radius:30px;
+
+    animation:popupShow 0.3s ease;
+
+}
+
+@keyframes popupShow{
+
+    from{
+        transform:scale(0.8);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.popup-box h2{
+
+    margin-bottom:20px;
+
+    color:#111827;
+
+}
+
+.popup-select{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    border:1px solid #dbeafe;
+
+    margin-bottom:20px;
+
+    outline:none;
+
+}
+
+.popup-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.close-btn,
+.submit-btn{
+
+    flex:1;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+.close-btn{
+
+    background:#f3f4f6;
+
+}
+
+.submit-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+
+
+
+        /* EMPTY */
+
+        .empty{
+
+            background:white;
+
+            padding:80px;
+
+            border-radius:35px;
+
+            text-align:center;
+
+            box-shadow:
+            0 10px 30px rgba(0,0,0,0.08);
+
+        }
+
+        .empty h2{
+
+            margin-bottom:12px;
+
+            font-size:35px;
+
+        }
+
+        .empty p{
+
+            color:#6b7280;
+
+        }
+
+        /* MOBILE */
+
+        @media(max-width:768px){
+
+            body{
+                padding:12px;
+            }
+
+            .top-bar{
+                padding:25px;
+            }
+
+            .top-bar h1{
+                font-size:32px;
+            }
+
+            .info-grid{
+                grid-template-columns:1fr;
+            }
+
+            .orders-grid{
+                grid-template-columns:1fr;
+            }
+
+            .card-top{
+                flex-direction:column;
+            }
+
+        }
+
+
+  
+.manage-btn{
+
+    background:#ede9fe;
+
+    color:#7c3aed;
+
+}
+
+
+.manage-actions{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.manage-card{
+
+    padding:25px;
+
+    border:none;
+
+    border-radius:20px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.manage-card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.cancel-card{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.return-card{
+
+    background:#fff7ed;
+
+    color:#ea580c;
+
+}
+
+.close-popup-btn{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:14px;
+
+    margin-top:15px;
+
+    cursor:pointer;
+
+    background:#f3f4f6;
+
+    font-weight:bold;
+
+}
+
+
+.Return-Requested{
+    background:#f97316;
+}
+
+.Returning-To-Sender{
+    background:#7c3aed;
+}
+
+.Returned{
+    background:#374151;
+}
+
+
+.star{
+
+    font-size:42px;
+
+    cursor:pointer;
+
+    color:#d1d5db;
+
+    transition:0.2s;
+
+    margin:0 5px;
+
+}
+
+.star.active{
+
+    color:#facc15;
+
+    transform:scale(1.1);
+
+}
+
+
+
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOP -->
+
+    <div class="top-bar">
+
+        <h1>📦 My Orders</h1>
+
+        <p>
+
+            Manage and track all your logistics shipments in one place.
+
+        </p>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+        <button class="filter-btn"
+                onclick="filterOrders('all')">
+
+            All Orders
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterOrders('Booked')">
+
+            Pending
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterOrders('Delivered')">
+
+            Delivered
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterOrders('Cancelled')">
+
+            Cancelled
+
+        </button>
+
+    </div>
+
+    {% if orders %}
+
+    <div class="orders-grid">
+
+        {% for order in orders %}
+
+        <div class="order-card"
+             data-status="{{ order.status }}">
+
+            <!-- TOP -->
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="tracking">
+
+                        {{ order.tracking_id }}
+
+                    </div>
+
+                    <div class="date">
+
+                        {{ order.created_at }}
+
+                    </div>
+
+                </div>
+
+                <div class="status {{ order.status.replace(' ','-') }}">
+
+                    {{ order.status }}
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+
+            <div class="info-grid">
+
+                <div class="info-box">
+
+                    <h4>Current Hub</h4>
+
+                    <p>
+
+                        {{ order.current_hub or 'Nellore Hub' }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h4>Receiver</h4>
+
+                    <p>
+
+                        {{ order.receiver_name }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h4>Price</h4>
+
+                    <p>
+
+                        ₹{{ order.price }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h4>Transport</h4>
+
+                    <p>
+
+                        {{ order.transport or 'Road Transport' }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h4>Destination</h4>
+
+                    <p>
+
+                        {{ order.receiver_state }}
+
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <h4>Estimated Delivery</h4>
+
+                    <p>
+
+                        2 - 4 Days
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            
+<div class="info-box">
+
+    <h4>Approval Status</h4>
+
+    <p>
+
+        {% if order.status in
+        ['Return Requested'] %}
+
+            Pending Approval
+
+        {% elif order.status in
+        ['Returning To Sender'] %}
+
+            Approved
+
+        {% else %}
+
+            Not Requested
+
+        {% endif %}
+
+    </p>
+
+</div>
+
+
+
+
+<div
+style="
+background:#eff6ff;
+padding:14px;
+border-radius:16px;
+margin-top: 10px;
+margin-bottom:20px;
+font-size:14px;
+color:#1e3a8a;
+font-weight:600;
+">
+
+ℹ Return available until parcel reaches destination hub.
+
+</div>
+
+
+
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress-section">
+
+                <div class="progress-title">
+
+                    <span>
+
+                        Shipment Progress
+
+                    </span>
+
+                    {% if order.status == "Delivered" %}
+
+                    <span>100%</span>
+
+                    {% elif order.status == "Cancelled" %}
+
+                    <span>Cancelled</span>
+
+                    {% else %}
+
+                    <span>50%</span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="progress-bar">
+
+                    {% if order.status == "Delivered" %}
+
+                    <div class="progress-fill"
+                         style="width:100%"></div>
+
+                    {% elif order.status == "Cancelled" %}
+
+                    <div class="progress-fill"
+                         style="width:15%"></div>
+
+                    {% else %}
+
+                    <div class="progress-fill"
+                         style="width:50%"></div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- BUTTONS -->
+
+           
+
+<div class="buttons">
+
+    <!-- TRACK -->
+
+    <a href="/track?tracking_id={{ order.tracking_id }}"
+       class="btn track-btn">
+
+        🚚 Track
+
+    </a>
+
+    <!-- RECEIPT -->
+
+    <a href="/receipt/{{ order.tracking_id }}"
+       class="btn receipt-btn">
+
+        🧾 Receipt
+
+    </a>
+
+
+    <!-- COPY -->
+
+    <button
+        class="btn manage-btn"
+        onclick="copyTrackingId(
+            '{{ order.tracking_id }}'
+        )">
+
+        📋 Copy ID
+
+    </button>
+
+    <!-- SUPPORT -->
+
+   
+<button
+class="btn manage-btn"
+onclick="openSupportPopup(
+'{{ order.tracking_id }}'
+)">
+
+☎ Support
+
+</button>
+
+
+
+    <!-- RATE -->
+
+    {% if order.status == "Delivered" %}
+
+
+    <button
+    class="btn return-btn"
+    onclick="openRatingPopup(
+    '{{ order.tracking_id }}'
+    )">
+
+    ⭐ Rate
+
+    </button>
+
+
+
+    {% endif %}
+
+    <!-- MANAGE -->
+
+    {% if order.status != "Delivered" %}
+
+    <button
+        class="btn manage-btn"
+        onclick="openManagePopup(
+            '{{ order.tracking_id }}',
+            '{{ order.status }}'
+        )">
+
+        ⚙ Manage
+
+    </button>
+
+    {% endif %}
+
+</div>
+
+
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+
+        <h2>
+
+            📭 No Orders Found
+
+        </h2>
+
+        <p>
+
+            You have not created any shipments yet.
+
+        </p>
+
+{% endif %}
+
+</div>
+
+<!-- MANAGE POPUP -->
+
+<div
+class="popup-overlay"
+id="managePopup">
+
+    <div class="popup-box">
+
+        <!-- TOP -->
+
+        <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        ">
+
+            <h2>
+
+                Manage Shipment
+
+            </h2>
+
+            <!-- CLOSE -->
+
+            <button
+            onclick="closeManagePopup()"
+            style="
+            border:none;
+            background:#fee2e2;
+            color:#dc2626;
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            cursor:pointer;
+            font-size:18px;
+            font-weight:bold;
+            ">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <!-- TRACKING -->
+
+        <div
+        style="
+        background:#eff6ff;
+        padding:15px;
+        border-radius:16px;
+        margin-bottom:20px;
+        font-weight:bold;
+        color:#1e3a8a;
+        ">
+
+            Tracking ID:
+            <span id="popupTrackingId">
+
+            </span>
+
+        </div>
+
+        <!-- ACTIONS -->
+
+        <div class="manage-actions">
+
+            <button
+            class="manage-card cancel-card"
+            onclick="showCancelReasons()">
+
+                ❌ Cancel Shipment
+
+            </button>
+
+            <button
+            class="manage-card return-card"
+            onclick="showReturnReasons()">
+
+                ↩ Request Return
+
+            </button>
+
+        </div>
+
+        <!-- CANCEL FORM -->
+
+        <form
+        method="POST"
+        id="cancelForm"
+        style="display:none;">
+
+            <select
+            name="reason"
+            class="popup-select"
+            required>
+
+                <option value="">
+                    Select Cancel Reason
+                </option>
+
+                <option>
+                    Booked By Mistake
+                </option>
+
+                <option>
+                    Wrong Address
+                </option>
+
+                <option>
+                    Price Issue
+                </option>
+
+                <option>
+                    Other
+                </option>
+
+            </select>
+
+            <button
+            type="submit"
+            class="submit-btn">
+
+                Confirm Cancellation
+
+            </button>
+
+        </form>
+
+        <!-- RETURN FORM -->
+
+        <form
+        method="POST"
+        id="returnForm"
+        style="display:none;">
+
+            <select
+            name="reason"
+            class="popup-select"
+            required>
+
+                <option value="">
+                    Select Return Reason
+                </option>
+
+                <option>
+                    Wrong Delivery Address
+                </option>
+
+                <option>
+                    Receiver Unavailable
+                </option>
+
+                <option>
+                    Delivery Delay
+                </option>
+
+                <option>
+                    Changed Mind
+                </option>
+
+                <option>
+                    Other
+                </option>
+
+            </select>
+
+            <button
+            type="submit"
+            class="submit-btn">
+
+                Submit Return Request
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- SUPPORT POPUP -->
+
+<div
+class="popup-overlay"
+id="supportPopup">
+
+    <div class="popup-box">
+
+        <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        ">
+
+            <h2>
+
+                Customer Support
+
+            </h2>
+
+            <button
+            onclick="closeSupportPopup()"
+            style="
+            border:none;
+            background:#fee2e2;
+            color:#dc2626;
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            cursor:pointer;
+            ">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div
+        style="
+        background:#eff6ff;
+        padding:18px;
+        border-radius:18px;
+        line-height:2;
+        ">
+
+            📦 Tracking ID:
+            <span id="supportTracking">
+
+            </span>
+
+            <br>
+
+            ☎ Helpline:
+            +91 9876543210
+
+            <br>
+
+            📧 support@logistics.com
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- RATING POPUP -->
+
+<div
+class="popup-overlay"
+id="ratingPopup">
+
+    <div class="popup-box">
+
+        <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        ">
+
+            <h2>
+
+                Rate Delivery
+
+            </h2>
+
+            <button
+            onclick="closeRatingPopup()"
+            style="
+            border:none;
+            background:#fee2e2;
+            color:#dc2626;
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            cursor:pointer;
+            ">
+
+                ✕
+
+            </button>
+
+        </div>
+
+
+        <div
+        id="starRating"
+        style="
+        text-align:center;
+        margin-bottom:20px;
+        ">
+
+        <span
+        class="star"
+        onclick="setRating(1)">
+
+        ☆</span>
+
+        <span
+        class="star"
+        onclick="setRating(2)">
+
+        ☆</span>
+
+        <span
+        class="star"
+        onclick="setRating(3)">
+
+        ☆</span>
+
+        <span
+        class="star"
+        onclick="setRating(4)">
+
+        ☆</span>
+
+        <span
+        class="star"
+        onclick="setRating(5)">
+
+        ☆</span>
+
+        </div>
+
+        <input
+        type="hidden"
+        id="selectedRating"
+        value="0">
+
+
+
+        <textarea
+        placeholder="Write your feedback..."
+        style="
+        width:100%;
+        height:120px;
+        border-radius:18px;
+        border:1px solid #dbeafe;
+        padding:15px;
+        resize:none;
+        margin-bottom:20px;
+        ">
+
+        </textarea>
+
+        
+<button
+class="submit-btn"
+onclick="submitRating()">
+
+    Submit Review
+
+</button>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+function filterOrders(status){
+
+    let cards = document.querySelectorAll(
+        '.order-card'
+    );
+
+    cards.forEach(card => {
+
+        let orderStatus =
+        card.getAttribute(
+            'data-status'
+        );
+
+        if(status == 'all'){
+
+            card.style.display = 'block';
+
+        }
+
+        else if(orderStatus == status){
+
+            card.style.display = 'block';
+
+        }
+
+        else{
+
+            card.style.display = 'none';
+
+        }
+
+    });
+
+}
+
+
+let currentTrackingId = '';
+
+function openManagePopup(
+    trackingId,
+    status
+){
+
+    currentTrackingId =
+    trackingId;
+
+    
+    document.getElementById(
+        'popupTrackingId'
+    ).innerHTML = trackingId;
+
+
+
+    document.getElementById(
+        'managePopup'
+    ).style.display = 'flex';
+
+    document.getElementById(
+        'cancelForm'
+    ).style.display = 'none';
+
+    document.getElementById(
+        'returnForm'
+    ).style.display = 'none';
+
+}
+
+function closeManagePopup(){
+
+    document.getElementById(
+        'managePopup'
+    ).style.display = 'none';
+
+}
+
+function showCancelReasons(){
+
+    let form =
+    document.getElementById(
+        'cancelForm'
+    );
+
+    form.style.display = 'block';
+
+    form.action =
+    '/cancel-order/' +
+    currentTrackingId;
+
+}
+
+function showReturnReasons(){
+
+    let form =
+    document.getElementById(
+        'returnForm'
+    );
+
+    form.style.display = 'block';
+
+    form.action =
+    '/cancel-order/' +
+    currentTrackingId;
+
+}
+
+function copyTrackingId(id){
+
+    navigator.clipboard.writeText(id);
+
+    alert(
+        'Tracking ID Copied'
+    );
+
+}
+
+function openSupportPopup(id){
+
+    document.getElementById(
+        'supportPopup'
+    ).style.display='flex';
+
+    document.getElementById(
+        'supportTracking'
+    ).innerHTML=id;
+
+}
+
+function closeSupportPopup(){
+
+    document.getElementById(
+        'supportPopup'
+    ).style.display='none';
+
+}
+
+function openRatingPopup(){
+
+    document.getElementById(
+        'ratingPopup'
+    ).style.display='flex';
+
+}
+
+function closeRatingPopup(){
+
+    document.getElementById(
+        'ratingPopup'
+    ).style.display='none';
+
+}
+
+
+function setRating(rating){
+
+    document.getElementById(
+        'selectedRating'
+    ).value = rating;
+
+    let stars =
+    document.querySelectorAll(
+        '.star'
+    );
+
+    stars.forEach((star,index)=>{
+
+        if(index < rating){
+
+            star.classList.add(
+                'active'
+            );
+
+            star.innerHTML='★';
+
+        }
+
+        else{
+
+            star.classList.remove(
+                'active'
+            );
+
+            star.innerHTML='☆';
+
+        }
+
+    });
+
+}
+
+
+function submitRating(){
+
+    let rating =
+    document.getElementById(
+        'selectedRating'
+    ).value;
+
+    if(rating == 0){
+
+        alert(
+            'Please select rating'
+        );
+
+        return;
+
+    }
+
+    alert(
+        'Thank you for your feedback ⭐'
+    );
+
+    closeRatingPopup();
+
+    // RESET STARS
+
+    let stars =
+    document.querySelectorAll(
+        '.star'
+    );
+
+    stars.forEach(star=>{
+
+        star.classList.remove(
+            'active'
+        );
+
+        star.innerHTML='☆';
+
+    });
+
+    document.getElementById(
+        'selectedRating'
+    ).value = 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+</html>

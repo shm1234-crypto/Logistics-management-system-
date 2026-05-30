@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        Admin Dashboard
+
+    </title>
+
+    <!-- FONT AWESOME -->
+
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    rel="stylesheet">
+
+    <!-- CHART JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        *{
+
+            margin:0;
+            padding:0;
+
+            box-sizing:border-box;
+
+            font-family:'Segoe UI',sans-serif;
+
+        }
+
+        body{
+
+            background:#f3f7fb;
+
+            color:#111827;
+
+            overflow-x:hidden;
+
+        }
+
+        /* TOGGLE */
+
+        .toggle-btn{
+
+            position:fixed;
+
+            top:15px;
+            left:15px;
+
+            z-index:2000;
+
+            width:45px;
+            height:45px;
+
+            border:none;
+
+            border-radius:12px;
+
+            background:#2563eb;
+
+            color:white;
+
+            font-size:22px;
+
+            cursor:pointer;
+
+        }
+
+        /* LAYOUT */
+
+        .layout{
+
+            display:flex;
+
+            min-height:100vh;
+
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+
+            width:270px;
+
+            background:
+            linear-gradient(
+            180deg,
+            #111827,
+            #1f2937);
+
+            color:white;
+
+            position:fixed;
+
+            top:0;
+            left:0;
+            bottom:0;
+
+            padding:30px 20px;
+
+            overflow:auto;
+
+            z-index:999;
+
+            transition:0.4s;
+
+        }
+
+        .sidebar.collapsed{
+
+            width:90px;
+
+        }
+
+        .logo{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:15px;
+
+            margin-bottom:40px;
+
+            cursor:pointer;
+
+        }
+
+        
+        .logo h1{
+
+            font-size:25px;
+           text-indent: 70%;
+            
+
+        }
+
+        .sidebar.collapsed h1{
+
+            display:none;
+
+        }
+
+        .menu{
+
+            display:flex;
+
+            flex-direction:column;
+
+            gap:10px;
+
+        }
+
+        .menu a{
+
+            text-decoration:none;
+
+            color:#d1d5db;
+
+            padding:16px 18px;
+
+            border-radius:16px;
+
+            transition:0.3s;
+
+            font-weight:600;
+
+            display:flex;
+
+            align-items:center;
+
+            gap:12px;
+
+        }
+
+        .menu a:hover{
+
+            background:#2563eb;
+
+            color:white;
+
+            transform:translateX(4px);
+
+        }
+
+        .sidebar.collapsed .menu a span{
+
+            display:none;
+
+        }
+
+        .sidebar.collapsed .menu a{
+
+            justify-content:center;
+
+        }
+
+        /* MAIN */
+
+        .main{
+
+            margin-left:270px;
+
+            width:calc(100% - 270px);
+
+            padding:30px;
+
+            transition:0.4s;
+
+        }
+
+        .main.collapsed{
+
+            margin-left:90px;
+
+            width:calc(100% - 90px);
+
+        }
+
+        /* TOPBAR */
+
+        .topbar{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            margin-bottom:30px;
+
+        }
+
+        .topbar h1{
+
+            font-size:38px;
+
+            margin-bottom:8px;
+
+        }
+
+        .topbar p{
+
+            color:#6b7280;
+
+        }
+
+        .admin-profile{
+
+            background:white;
+
+            padding:14px 20px;
+
+            border-radius:18px;
+
+            box-shadow:
+            0 10px 25px rgba(0,0,0,0.06);
+
+            font-weight:700;
+
+        }
+
+        /* STATS */
+
+        .stats{
+
+            display:grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(220px,1fr));
+
+            gap:22px;
+
+            margin-bottom:35px;
+
+        }
+
+        .stat-card{
+
+            background:white;
+
+            border-radius:28px;
+
+            padding:28px;
+
+            box-shadow:
+            0 12px 30px rgba(0,0,0,0.06);
+
+            position:relative;
+
+            overflow:hidden;
+
+        }
+
+        .stat-card::before{
+
+            content:'';
+
+            position:absolute;
+
+            top:-40px;
+            right:-40px;
+
+            width:120px;
+            height:120px;
+
+            background:
+            rgba(37,99,235,0.08);
+
+            border-radius:50%;
+
+        }
+
+        .stat-card h4{
+
+            color:#6b7280;
+
+            margin-bottom:10px;
+
+            font-size:16px;
+
+        }
+
+        .stat-card h1{
+
+            font-size:42px;
+
+        }
+
+        /* SECTION */
+
+        .section{
+
+            background:white;
+
+            border-radius:30px;
+
+            padding:28px;
+
+            margin-bottom:35px;
+
+            box-shadow:
+            0 10px 30px rgba(0,0,0,0.05);
+
+        }
+
+        .section-title{
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+            margin-bottom:25px;
+
+            flex-wrap:wrap;
+
+            gap:15px;
+
+        }
+
+        .section-title h2{
+
+            font-size:30px;
+
+        }
+
+        /* TABLE */
+
+        .table-wrapper{
+
+            overflow:auto;
+
+        }
+
+        table{
+
+            width:100%;
+
+            border-collapse:collapse;
+
+            min-width:1100px;
+
+        }
+
+        th{
+
+            background:#eff6ff;
+
+            color:#1e3a8a;
+
+            padding:18px;
+
+            text-align:left;
+
+            font-size:14px;
+
+        }
+
+        td{
+
+            padding:18px;
+
+            border-bottom:1px solid #eef2ff;
+
+        }
+
+        tr:hover{
+
+            background:#f8fbff;
+
+        }
+
+        /* BADGES */
+
+        .badge{
+
+            padding:8px 16px;
+
+            border-radius:30px;
+
+            font-size:12px;
+
+            font-weight:bold;
+
+        }
+
+        .pending{
+
+            background:#fef3c7;
+
+            color:#92400e;
+
+        }
+
+        .approved{
+
+            background:#dcfce7;
+
+            color:#166534;
+
+        }
+
+        .rejected{
+
+            background:#fee2e2;
+
+            color:#991b1b;
+
+        }
+
+        .transit{
+
+            background:#dbeafe;
+
+            color:#1d4ed8;
+
+        }
+
+        .delivered{
+
+            background:#dcfce7;
+
+            color:#166534;
+
+        }
+
+        /* BUTTONS */
+
+        .btn{
+
+            border:none;
+
+            padding:11px 18px;
+
+            border-radius:14px;
+
+            cursor:pointer;
+
+            text-decoration:none;
+
+            font-weight:700;
+
+            display:inline-block;
+
+            transition:0.3s;
+
+            font-size:14px;
+
+        }
+
+        .btn:hover{
+
+            transform:translateY(-2px);
+
+        }
+
+        .primary{
+
+            background:#2563eb;
+
+            color:white;
+
+        }
+
+        .success{
+
+            background:#16a34a;
+
+            color:white;
+
+        }
+
+        .danger{
+
+            background:#dc2626;
+
+            color:white;
+
+        }
+
+        /* SEARCH */
+
+        input{
+
+            padding:14px;
+
+            border-radius:14px;
+
+            border:1px solid #d1d5db;
+
+            outline:none;
+
+            width:320px;
+
+        }
+
+        input:focus{
+
+            border:1px solid #2563eb;
+
+        }
+
+        /* CHART */
+
+        .chart-box{
+
+            width:350px;
+
+            margin:auto;
+
+        }
+
+        /* ACTIVITY */
+
+        .activity{
+
+            background:#f8fbff;
+
+            border:1px solid #dbeafe;
+
+            padding:18px;
+
+            border-radius:18px;
+
+            margin-top:20px;
+
+            font-weight:600;
+
+            color:#1e3a8a;
+
+        }
+
+        /* MOBILE */
+
+        @media(max-width:900px){
+
+            .sidebar{
+
+                display:none;
+
+            }
+
+            .main{
+
+                margin-left:0;
+
+                width:100%;
+
+                padding:20px;
+
+            }
+
+            .topbar{
+
+                flex-direction:column;
+
+                align-items:flex-start;
+
+                gap:18px;
+
+            }
+
+        }
+
+        .toast-container{
+
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    z-index:99999;
+
+}
+
+.custom-toast{
+
+    padding:16px 24px;
+
+    border-radius:16px;
+
+    color:white;
+
+    margin-bottom:15px;
+
+    font-weight:700;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.15);
+
+    animation:slideIn 0.4s ease;
+
+}
+
+.success{
+
+    background:#16a34a;
+
+}
+
+.warning{
+
+    background:#f59e0b;
+
+}
+
+.danger{
+
+    background:#dc2626;
+
+}
+
+@keyframes slideIn{
+
+    from{
+
+        transform:
+        translateX(100px);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:
+        translateX(0);
+
+        opacity:1;
+
+    }
+
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+<div class="toast-container">
+
+    {% for category, message in messages %}
+
+    <div class="custom-toast {{ category }}">
+
+        {{ message }}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endwith %}
+
+<!-- TOGGLE -->
+
+<button
+id="toggleBtn"
+class="toggle-btn">
+
+    ☰
+
+</button>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar" id="sidebar">
+
+        <div class="logo" id="logoToggle">
+
+        
+
+            <h1>
+
+             Logistics
+
+            </h1>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="#dashboard">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>
+
+                    Dashboard
+
+                </span>
+
+            </a>
+
+            <a href="#analytics">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <span>
+
+                    Analytics
+
+                </span>
+
+            </a>
+
+            <a href="#orders">
+
+                <i class="fa-solid fa-box"></i>
+
+                <span>
+
+                    Parcel Management
+
+                </span>
+
+            </a>
+
+            <a href="#vendors">
+
+                <i class="fa-solid fa-store"></i>
+
+                <span>
+
+                    Vendor Requests
+
+                </span>
+
+            </a>
+
+            <a href="#hubstaff">
+
+                <i class="fa-solid fa-building"></i>
+
+                <span>
+
+                    Hub Staff Requests
+
+                </span>
+
+            </a>
+
+            <a href="#delivery">
+
+                <i class="fa-solid fa-motorcycle"></i>
+
+                <span>
+
+                    Delivery Requests
+
+                </span>
+
+            </a>
+
+            <a href="#returns">
+
+                <i class="fa-solid fa-rotate-left"></i>
+
+                <span>
+
+                    Return Requests
+
+                </span>
+
+            </a>
+
+            <a href="/logout">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+
+                    Logout
+
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+
+                    Admin Dashboard
+
+                </h1>
+
+                <p>
+
+                    Complete Logistics Management System
+
+                </p>
+
+            </div>
+
+            <div class="admin-profile">
+
+                👑 {{ session.staff }}
+
+            </div>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats" id="dashboard">
+
+            <div class="stat-card">
+
+                <h4>
+
+                    Total Parcels
+
+                </h4>
+
+                <h1>
+
+                    {{ total }}
+
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>
+
+                    Delivered
+
+                </h4>
+
+                <h1>
+
+                    {{ delivered }}
+
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>
+
+                    In Transit
+
+                </h4>
+
+                <h1>
+
+                    {{ transit }}
+
+                </h1>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h4>
+
+                    Revenue
+
+                </h4>
+
+                <h1>
+
+                    ₹{{ revenue }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+        <!-- ANALYTICS -->
+
+        <div
+        class="section"
+        id="analytics">
+
+            <div class="section-title">
+
+                <h2>
+
+                    📊 Parcel Analytics
+
+                </h2>
+
+            </div>
+
+            <div class="chart-box">
+
+                <canvas
+                id="adminChart">
+
+                </canvas>
+
+            </div>
+
+            <div class="activity">
+
+                🚚 Latest Parcel Activity :
+                {{ parcels[0].tracking_id if parcels else 'No Parcels' }}
+
+            </div>
+
+        </div>
+
+        <!-- PARCELS -->
+
+        <div
+        class="section"
+        id="orders">
+
+            <div class="section-title">
+
+                <h2>
+
+                    📦 Parcel Management
+
+                </h2>
+
+                <input
+                type="text"
+
+                id="parcelSearch"
+
+                placeholder="Search Tracking ID">
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table id="parcelTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Tracking</th>
+
+                            <th>Sender</th>
+
+                            <th>Status</th>
+
+                            <th>Current Hub</th>
+
+                            <th>Transport</th>
+
+                            <th>Price</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for p in parcels %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ p.tracking_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ p.sender_name }}
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge
+
+                                {% if p.status == 'Delivered' %}
+                                delivered
+
+                                {% else %}
+                                transit
+                                {% endif %}
+
+                                ">
+
+                                    {{ p.status }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {{ p.current_hub }}
+
+                            </td>
+
+                            <td>
+
+                                {{ p.transport }}
+
+                            </td>
+
+                            <td>
+
+                                ₹{{ p.price }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- VENDOR REQUESTS -->
+
+        <div
+        class="section"
+        id="vendors">
+
+            <div class="section-title">
+
+                <h2>
+
+                    🏪 Vendor Requests
+
+                </h2>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Business</th>
+
+                            <th>Owner</th>
+
+                            <th>Phone</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for v in vendor_requests %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ v.vendor_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ v.business_name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ v.owner_name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ v.phone }}
+
+                            </td>
+
+                            <td>
+
+<span class="badge
+
+{% if v.status == 'Approved' %}
+approved
+
+{% elif v.status == 'Rejected' %}
+rejected
+
+{% else %}
+pending
+{% endif %}
+
+">
+
+{{ v.status }}
+
+</span>
+
+</td>
+
+                            <td>
+
+                                {% if v.status == 'Pending' %}
+
+                                <a
+                                href="/approve-vendor/{{ v.id }}"
+                                class="btn success">
+
+                                    Approve
+
+                                </a>
+
+                                <a
+                                href="/reject-vendor/{{ v.id }}"
+                                class="btn btn danger">
+
+                                    Reject
+
+                                </a>
+
+                                {% else %}
+
+                                Completed
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- HUB STAFF -->
+
+        <div
+        class="section"
+        id="hubstaff">
+
+            <div class="section-title">
+
+                <h2>
+
+                    🏢 Hub Staff Requests
+
+                </h2>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Preferred Hub</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for h in hub_requests %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ h.staff_request_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ h.full_name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ h.email }}
+
+                            </td>
+
+                            <td>
+
+                                {{ h.phone }}
+
+                            </td>
+
+                            <td>
+
+                                {{ h.preferred_hub }}
+
+                            </td>
+
+                            <td>
+
+<span class="badge
+
+{% if h.status == 'Approved' %}
+approved
+
+{% elif h.status == 'Rejected' %}
+rejected
+
+{% else %}
+pending
+{% endif %}
+
+">
+
+{{ h.status }}
+
+</span>
+
+                            <td>
+
+                                {% if h.status == 'Pending' %}
+
+                                <a
+                                href="/approve-hub/{{ h.id }}"
+                                class="btn success">
+
+                                    Approve
+
+                                </a>
+
+                                <a
+                                href="/reject-hub/{{ h.id }}"
+                                class="btn danger">
+
+                                    Reject
+
+                                </a>
+
+                                {% else %}
+
+                                Completed
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- DELIVERY -->
+
+        <div
+        class="section"
+        id="delivery">
+
+            <div class="section-title">
+
+                <h2>
+
+                    🛵 Delivery Boy Requests
+
+                </h2>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Vehicle</th>
+
+                            <th>Hub</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for d in delivery_requests %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ d.request_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ d.full_name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ d.email }}
+
+                            </td>
+
+                            <td>
+
+                                {{ d.phone }}
+
+                            </td>
+
+                            <td>
+
+                                {{ d.vehicle_type }}
+
+                            </td>
+
+                            <td>
+
+                                {{ d.preferred_hub }}
+
+                            </td>
+                            <td>
+
+                            <span class="badge
+
+                                    {% if d.status == 'Approved' %}
+                                    approved
+
+                                    {% elif d.status == 'Rejected' %}
+                                    rejected
+
+                                    {% else %}
+                                    pending
+                                    {% endif %}
+
+                                    ">
+
+                                    {{ d.status }}
+
+                                </span>
+                            </td>
+
+                            <td>
+
+                                {% if d.status == 'Pending' %}
+
+                                <a
+                                href="/approve-delivery/{{ d.id }}"
+                                class="btn success">
+
+                                    Approve
+
+                                </a>
+
+                                <a
+                                href="/reject-delivery/{{ d.id }}"
+                                class="btn danger">
+
+                                    Reject
+
+                                </a>
+
+                                {% else %}
+
+                                Completed
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- RETURNS -->
+
+        <div
+        class="section"
+        id="returns">
+
+            <div class="section-title">
+
+                <h2>
+
+                    ↩ Return Requests
+
+                </h2>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Tracking</th>
+
+                            <th>Reason</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for r in return_requests %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ r.tracking_id }}
+
+                            </td>
+
+                            <td>
+
+                                {{ r.reason }}
+
+                            </td>
+
+                            <td>
+
+                                {% if r.status == 'Pending' %}
+
+                                <span class="badge pending">
+
+                                    Pending
+
+                                </span>
+
+                                {% elif r.status == 'Approved' %}
+
+                                <span class="badge approved">
+
+                                    Approved
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge rejected">
+
+                                    Rejected
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if r.status == 'Pending' %}
+
+                                <a
+                                href="/approve-return/{{ r.id }}"
+                                class="btn success">
+
+                                    Approve
+
+                                </a>
+
+                                <a
+                                href="/reject-return/{{ r.id }}"
+                                class="btn danger">
+
+                                    Reject
+
+                                </a>
+
+                                {% else %}
+
+                                Completed
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CHART -->
+
+<script>
+
+const ctx =
+document.getElementById(
+'adminChart'
+);
+
+new Chart(ctx, {
+
+    type:'pie',
+
+    data:{
+
+        labels:[
+
+            'Delivered',
+            'Transit',
+            'Revenue'
+
+        ],
+
+        datasets:[{
+
+            data:[
+
+                Number("{{ delivered }}"),
+                Number("{{ transit }}"),
+                Number("{{ revenue }}")
+
+            ],
+
+            backgroundColor:[
+
+                '#16a34a',
+                '#2563eb',
+                '#f59e0b'
+
+            ]
+
+        }]
+
+    }
+
+});
+
+</script>
+
+<!-- SEARCH -->
+
+<script>
+
+const searchInput =
+document.getElementById(
+'parcelSearch'
+);
+
+searchInput.addEventListener(
+'keyup',
+
+function(){
+
+    const value =
+    this.value.toLowerCase();
+
+    const rows =
+    document.querySelectorAll(
+    '#parcelTable tbody tr'
+    );
+
+    rows.forEach(row => {
+
+        row.style.display =
+
+        row.innerText
+        .toLowerCase()
+        .includes(value)
+
+        ? ''
+
+        : 'none';
+
+    });
+
+});
+
+</script>
+
+<!-- SIDEBAR -->
+
+<script>
+
+const toggleBtn =
+document.getElementById(
+'toggleBtn'
+);
+
+const logoToggle =
+document.getElementById(
+'logoToggle'
+);
+
+const sidebar =
+document.getElementById(
+'sidebar'
+);
+
+const main =
+document.querySelector(
+'.main'
+);
+
+function toggleSidebar(){
+
+    sidebar.classList.toggle(
+    'collapsed'
+    );
+
+    main.classList.toggle(
+    'collapsed'
+    );
+
+}
+
+toggleBtn.onclick =
+toggleSidebar;
+
+logoToggle.onclick =
+toggleSidebar;
+
+</script>
+
+</body>
+
+</html>
