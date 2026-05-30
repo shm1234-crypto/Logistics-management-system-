@@ -1,4 +1,8 @@
 Flask
-gunicorn
 mysql-connector-python
+Flask-Mail
+qrcode
+python-barcode
+gunicorn
 pandas
+Pillow
